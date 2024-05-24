@@ -123,7 +123,7 @@ if (jQueryVersion >= version18) {
 											Logger
 ************************************************************************************************************/
 function Logger(serverHost, verbose) {
-	this.clientToken		= $('meta[name="SelfRefactoringToken"]').getAttribute('content');
+	this.clientToken		= $('meta[name="SelfRefactoringToken"]').attr('content');
 	this.host				= serverHost + "/Threats";
 	this.refactoringsHost	= serverHost + "/RefactoringsServer/";
 	this.verbose			= (typeof verbose === "undefined") ? false : verbose;
@@ -340,7 +340,7 @@ function ClickAttempt(paramOc_Ev, paramOc_Elem, paramOc_T){
 			this.element.tagName!='HTML' &&
 			($(this.element).parents('a').length == 0 || (
 				$(this.element).parents('a').length == 1
-				&& $(this.element).parents('a').first().first()[0].getAttribute('href')=='#'
+				&& $(this.element).parents('a').first().first()[0].attr('href')=='#'
 				))){
 			var xpath=xpathInstance.getElementXPath(this.element);
 			var now=new Date().getTime();
