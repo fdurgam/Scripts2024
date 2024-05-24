@@ -123,7 +123,8 @@ if (jQueryVersion >= version18) {
 											Logger
 ************************************************************************************************************/
 function Logger(serverHost, verbose) {
-	this.clientToken		= $('meta[name="SelfRefactoringToken"]').attr('content');
+	//this.clientToken		= $('meta[name="SelfRefactoringToken"]').attr('content');
+	this.clientToken		= $('meta[name="SelfRefactoringToken"]').content;
 	this.host				= serverHost + "/Threats";
 	this.refactoringsHost	= serverHost + "/RefactoringsServer/";
 	this.verbose			= (typeof verbose === "undefined") ? false : verbose;
