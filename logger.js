@@ -990,7 +990,7 @@ function FormSubmission(){
 
 
 		$('form').on('submit',function(){
-
+			
 			//array of emtpy text inputs xpaths
 			var getEmptyInputs = function(jQueryForm) {
 				var emptyInputs = jQueryForm.find("input:text").filter(function() { return $(this).val() == ""; });
@@ -1000,7 +1000,7 @@ function FormSubmission(){
 				}
 				return emptyInputsXpaths;
 			};
-
+			event.preventDefault();
 
 			submitted=true;
 			var form=xpathInstance.getElementXPath(this);
