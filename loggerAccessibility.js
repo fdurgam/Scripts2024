@@ -814,6 +814,7 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
     this.load=function(){
         $('input','textarea').on('keyup', function(e){
             searchResultWithoutElectronicText.evento=false;
+            console.info(searchResultWithoutElectronicText.searchTerms);
             if (e.keyCode==13){
                 searchResultWithoutElectronicText.Element=e.currentTarget;
                 var include_name=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.name);
