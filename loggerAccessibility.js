@@ -798,7 +798,7 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
     this.threatName="SearchResultWithoutElectronicText";
     this.code="D09";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
-    this.searchTerms=["search", "search_query","gsc-i-id1"];
+    this.searchTerms=["search", "search_query","gsc-i-id1","Buscar"];
     this.searchTermsBotton=["gsc-search-button", "gsc-search-button-v2","gsc-search-button gsc-search-button-v2","search-icon-legacy","style-scope ytd-searchbox"];
     this.searchForm=["style-scope ytd-searchbox","search-form","gsc-search-box gsc-search-box-tools"];
     this.evento=false;
@@ -812,14 +812,15 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
     };
   
     this.load=function(){
-        $('input').on('keyup', function(e){
+        $('input','textarea').on('keyup', function(e){
             searchResultWithoutElectronicText.evento=false;
             if (e.keyCode==13){
                 searchResultWithoutElectronicText.Element=e.currentTarget;
                 var include_name=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.name);
                 var include_id=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.id);
+                var include_aria_label=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.getAttribute('aria-label'));
                 waitingTime=e.timeStamp-searchResultWithoutElectronicText.inputFocus;
-                if((include_name)&& (include_id)){
+                if(((include_name)&& (include_id))||(include_aria_label)){
                     var xpath=xpathInstance.getElementXPath(e.currentTarget);
                     logger.logEvent(searchResultWithoutElectronicText.threatName, {xpath:xpath,waitingTime:waitingTime});//detecta la ocurrencia del event              
                     searchResultWithoutElectronicText.evento=true;
