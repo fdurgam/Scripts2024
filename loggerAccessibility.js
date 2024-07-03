@@ -812,14 +812,20 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
     };
   
     this.load=function(){
-        $('input, textarea').on('keyup', function(e){
+        $('input, textarea').on('keydown', function(e){
+            
             searchResultWithoutElectronicText.evento=false;
-            console.info(searchResultWithoutElectronicText.searchTerms);
+            console.info(searchResultWithoutElectronicText.searchTerms)
+            console.info(e.keyCode)
             if (e.keyCode==13){
+               
                 searchResultWithoutElectronicText.Element=e.currentTarget;
                 var include_name=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.name);
                 var include_id=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.id);
+                console.info(searchResultWithoutElectronicText.Element.getAttribute('aria-label'))
+                
                 var include_aria_label=searchResultWithoutElectronicText.searchTerms.includes(searchResultWithoutElectronicText.Element.getAttribute('aria-label'));
+                console.info(include_aria_label)
                 waitingTime=e.timeStamp-searchResultWithoutElectronicText.inputFocus;
                 if(((include_name)&& (include_id))||(include_aria_label)){
                     var xpath=xpathInstance.getElementXPath(e.currentTarget);
@@ -863,7 +869,7 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
      $("button").on('focus', function(e){ 
          searchResultWithoutElectronicText.buttonFocus=e.timeStamp;
      });
-     $("input").on('focus', function(e){ 
+     $('input, textarea').on('focus', function(e){ 
          searchResultWithoutElectronicText.inputFocus=e.timeStamp;
      });
     };
