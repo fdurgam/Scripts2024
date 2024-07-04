@@ -145,7 +145,9 @@ function LoggerAccesibility(serverHost, verbose) {
             this.inappropriateTabSequence= Parametros(new InappropriateTabSequence());
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
             this.unfilledForm2=new UnfilledForm();
+            this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
             this.marca=new Marcar();
+
             if (logger.verbose) console.info("Loading Accessibility Events: Done");
             console.info(this.unfilledForm)
             
@@ -160,7 +162,47 @@ function LoggerAccesibility(serverHost, verbose) {
     };
 }
 
+/************************************************************************************************************
+	UnannouncedDynamicUpdates();
+************************************************************************************************************/
+function ContentRemovedWithoutNotice() {
+    this.code = "E2024-02";
+    this.threatName = "ContentRemovedWithoutNotice";
+    this.detect=false
+    var contentRemovedWithoutNotice=this
+    
+    if (logger.verbose) 
+        console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
+        
+       
+        document.addEventListener('keydown', function(event) {
+           // console.log('Tecla presionada: ' + event.key);
+           contentRemovedWithoutNotice.detect=false;
+        });
+        $("*").on('focus', function(e){ 
+            //unannouncedDynamicUpdates.inputFocus=e.timeStamp;
+            contentRemovedWithoutNotice.detect=true;
+            //console.info("foco en:",e.currentTarget, unannouncedDynamicUpdates.detect)
+            
+        });
+        $("*").on('blur', function(e){ 
+            //unannouncedDynamicUpdates.inputFocus=e.timeStamp;
+            //debugger;
+            if (contentRemovedWithoutNotice.detect) {
+                console.info("***************************Se detecta evento en:",e.currentTarget, contentRemovedWithoutNotice.detect)
+                if (logger.verbose) console.log(contentRemovedWithoutNotice.threatName);
+                var url=document.URL;
+                var key = xpathInstance.getElementXPath(e.currentTarget);
+                var html = e.currentTarget.outerHTML;
+				logger.logEvent(contentRemovedWithoutNotice.threatName, {url:url, xpath:key,html:html}, false);
+				
+                contentRemovedWithoutNotice.detect=false
 
+            }
+            //console.info("Sale foco de:",e.currentTarget, unannouncedDynamicUpdates.detect)
+        });
+   
+}
 
 /************************************************************************************************************
 	InaccessibleManners();
