@@ -922,7 +922,152 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
 /************************************************************************************************************
 10 - SynthesisInIdiomaDifferentThePage
 ************************************************************************************************************/
+function InappropriateTabSequence(contenedor) {
+    this.threatName = "InappropriateTabSequence2024";
+    this.code = "E10";
+    this.contenedor = contenedor || "form";
+    console.info(">>TEST Cargando El Evento " + this.threatName + " - " + this.contenedor + ", Codigo: " + this.code);
 
+    let eventQueue = [];
+    var event = this;
+
+    // Inicializar canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = "focusCanvas";
+    canvas.style.position = 'fixed'; // Posicionamiento fijo
+    canvas.style.top = '0'; // Alineación en la parte superior
+    canvas.style.left = '0'; // Alineación en la parte izquierda
+    canvas.style.zIndex = '9999'; // Asegurar que esté en la parte superior
+    canvas.style.pointerEvents = 'none'; // Evitar que el canvas interfiera con otros elementos
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    // Ajustar el tamaño del canvas para cubrir toda la pantalla
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas(); // Ajustar el tamaño inicialmente
+
+    window.addEventListener('resize', resizeCanvas); // Ajustar el tamaño en caso de redimensionar la ventana
+
+    // Función para calcular la media de un array
+    function calculateMean(array) {
+        let sum = array.reduce((acc, val) => acc + val, 0);
+        return sum / array.length;
+    }
+
+    // Función para calcular la desviación estándar de un array
+    function calculateStandardDeviation(array) {
+        let mean = calculateMean(array);
+        let variance = array.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / array.length;
+        return Math.sqrt(variance);
+    }
+
+    
+
+    this.initialize = function() {
+        $("*").on('focus', function(e) {
+            let isContenedor = e.currentTarget.closest(event.contenedor) !== null;
+            if (isContenedor) {
+                var top = $(e.currentTarget).offset().top;
+                var left = $(e.currentTarget).offset().left;
+                let xpath = xpathInstance.getElementXPath(e.currentTarget);
+                let xpath_contenedor = xpathInstance.getElementXPath(e.currentTarget.closest(event.contenedor));
+                if (eventQueue.length > 0) {
+                    if (xpath_contenedor != eventQueue[eventQueue.length - 1].xpath_contenedor) {
+                        eventQueue = [];
+                    }
+                }
+                eventQueue.push({ 'x': left, 'y': top, 'xpath': xpath, 'xpath_contenedor': xpath_contenedor });
+                drawOnCanvas();
+                if (eventQueue.length >= 2) {
+                    var lastEvent = eventQueue[eventQueue.length - 1];
+                    var secondLastEvent = eventQueue[eventQueue.length - 2];
+                    var lastTop = lastEvent.y;
+                    var secondLastTop = secondLastEvent.y;
+                    if (lastTop < secondLastTop) {
+                        let eventQueueCopy = [...eventQueue];
+                       // console.info(eventQueueCopy);
+                        let yValues = eventQueueCopy.map(item => item.y);
+                        let differences = [];
+                        for (let i = 0; i < yValues.length - 1; i++) {
+                            let difference = Math.abs(yValues[i + 1] - yValues[i]);
+                            differences.push(difference);
+                        }
+                        let mean = calculateMean(differences);
+                        let standardDeviation = calculateStandardDeviation(differences);
+                       // console.log("Valores 'y':", yValues, differences, mean, standardDeviation);
+                        if ((mean + standardDeviation) < Math.abs(lastTop - secondLastTop)) {
+                            logger.logEvent(event.threatName, {
+                                'contenedor': event.contenedor,
+                                'origen': eventQueueCopy[eventQueueCopy.length - 2].xpath,
+                                "destino": eventQueueCopy[eventQueueCopy.length - 1].xpath,
+                                'eventQueue': eventQueueCopy,
+                                'screenshot': "imageDatas"
+                            });
+                        }
+                    }
+                }
+            } else {
+                if (eventQueue.length > 0) {
+                    eventQueue = [];
+                }
+            }
+        });
+
+        $("*").on('blur', function(e) {
+            if (eventQueue.length === 0) {
+                const isContenedor = e.currentTarget.closest(event.contenedor) !== null;
+                if (isContenedor) {
+                    var top = $(e.currentTarget).offset().top;
+                    var left = $(e.currentTarget).offset().left;
+                    let xpath = xpathInstance.getElementXPath(e.currentTarget);
+                    let xpath_contenedor = xpathInstance.getElementXPath(e.currentTarget.closest(event.contenedor));
+                    eventQueue.push({ 'x': left, 'y': top, 'xpath': xpath, 'xpath_contenedor': xpath_contenedor });
+                    drawOnCanvas();
+                } else {
+                    eventQueue = [];
+                }
+            }
+        });
+
+        $("body").on('focusout', function(e) {
+            const focusedElement = $(e.target);
+            const isInsideBody = focusedElement.closest('body').length > 0;
+            if (!isInsideBody) {
+                console.log('El foco se ha movido fuera del body.');
+            }
+        });
+
+        // Llamada a la función de verificación
+        verifyScriptLoaded();
+    };
+
+    function drawOnCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let lastPoint = null;
+        eventQueue.forEach(point => {
+            const x = point.x;
+            const y = point.y;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+            if (lastPoint) {
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = 'blue';
+                ctx.stroke();
+            }
+            lastPoint = { x, y };
+        });
+    }
+
+    this.initialize();
+}
+/*
 function InappropriateTabSequence(){
     this.threatName="InappropriateTabSequence";
     this.code="E10";
@@ -1040,7 +1185,7 @@ function InappropriateTabSequence(){
     };   
     this.initialize();
 };
-
+*/
 
 /************************************************************************************************************
 Confused speech synthesis								
