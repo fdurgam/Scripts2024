@@ -1,3 +1,16 @@
+function verifyScriptLoaded() {
+    try {
+        // Verifica si una variable específica existe o si una función específica está disponible
+        if (typeof someVariable !== 'undefined' && someVariable === 'expectedValue') {
+            console.info("El script se cargó y ejecutó correctamente.");
+        } else {
+            console.warn("El script no se cargó o no se ejecutó como se esperaba.");
+        }
+    } catch (e) {
+        console.error("Error durante la verificación del script: ", e);
+    }
+}
+
 /************************************************************************************************************
 	Extiende los Parametros para Accesibilidad
 ************************************************************************************************************/
