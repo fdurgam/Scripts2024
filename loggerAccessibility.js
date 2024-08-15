@@ -142,7 +142,8 @@ function LoggerAccesibility(serverHost, verbose) {
             this.unfilledForm=Parametros(new UnfilledFormAccessibility());     
             this.searchResultWithoutElectronicText=Parametros(new SearchResultWithoutElectronicText());
             this.confusedSpeechSynthesis=Parametros(new ConfusedSpeechSynthesis()); 
-            this.inappropriateTabSequence= Parametros(new InappropriateTabSequence());
+            this.inappropriateTabSequenceForm= Parametros(new InappropriateTabSequence("form"));
+            this.inappropriateTabSequenceTable= Parametros(new InappropriateTabSequence("form"));
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
             this.unfilledForm2=new UnfilledForm();
             this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
