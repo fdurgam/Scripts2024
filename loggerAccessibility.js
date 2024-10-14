@@ -145,7 +145,7 @@ function LoggerAccesibility(serverHost, verbose) {
     
     this.loadAccesibilityEventsLoggers=function(){ 
         if (logger.verbose) console.info("Loading Accessibility Events: Processing");
-            this.autoDeleteEntryField=Parametros(new AutoDeleteEntryField());
+            this.deleted_input_content=Parametros(new Deleted_input_content());
             this.electronicTextforNonSignificantSpeechSynthesis=Parametros(new ElectronicTextforNonSignificantSpeechSynthesis());
             this.electronicTextforNonExistentSpeechSynthesis=Parametros(new ElectronicTextforNonExistentSpeechSynthesis());     
             this.highFrequencyOfUseOfTheTabKey= Parametros(new HighFrequencyOfUseOfTheTabKey());
@@ -364,26 +364,26 @@ function UnfilledForm(){
 	});
 }
 /************************************************************************************************************
-    AutoDeleteEntryField
+    Deleted input content
 ************************************************************************************************************/
-function AutoDeleteEntryField(paramOc_Elem){
+function Deleted_input_content(paramOc_Elem){
     this.code="E01";
-    this.threatName="AutoDeleteEntryField";
+    this.threatName="Deleted_input_content";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
-    var autoDeleteEntryField = this;
+    var deleted_input_content = this;
  
     $(":text").on('change',function(e) {
-        autoDeleteEntryField.value=this.value;              
+        deleted_input_content.value=this.value;              
     });
  
     $(":text").on('blur',function(e) {
                
-        if(!autoDeleteEntryField.value==""){ 
+        if(!deleted_input_content.value==""){ 
             if(!e.currentTarget.value|| 0 === e.currentTarget.value.length){   
                 var xpath=xpathInstance.getElementXPath(e.currentTarget);
-                autoDeleteEntryField.value=""; 
-                if (logger.verbose) console.log(autoDeleteEntryField.threatName+" on "+xpath);
-                logger.logEvent(autoDeleteEntryField.threatName, {xpath:xpath});          
+                deleted_input_content.value=""; 
+                if (logger.verbose) console.log(deleted_input_content.threatName+" on "+xpath);
+                logger.logEvent(deleted_input_content.threatName, {xpath:xpath});          
             }
         }
     });
