@@ -49,7 +49,7 @@ var HighFrequencyTab=new Array();
     HighFrequencyTab["MinimumSteps"]=4;
     HighFrequencyTab["MaximumScrollingTime"]=22580;
     HighFrequencyTab["DwellingTime"]=4830;
-this.valores["HighFrequencyOfUseOfTheTabKey"]=HighFrequencyTab;
+this.valores["Frequent_tab"]=HighFrequencyTab;
 var NavigationPath = new Array()
     NavigationPath["minimumNavigations"]=3;
     NavigationPath["maximumTime"]=80640;
@@ -148,7 +148,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.deleted_input_content=Parametros(new Deleted_input_content());
             this.unhelpful_label=Parametros(new Unhelpful_label());
             this.missing_SR_text=Parametros(new Missing_SR_text());     
-            this.highFrequencyOfUseOfTheTabKey= Parametros(new HighFrequencyOfUseOfTheTabKey());
+            this.frequent_tab= Parametros(new Frequent_tab());
             this.navigationPath=Parametros(new NavigationPathAccessibility());  
             this.bulkAction=new BulkAction();
             this.formTimer=new FormTimer();//Funcion auxiliar
@@ -683,15 +683,15 @@ function FastScrollingWithKeyboard(minSteps, maxScrollingTime, paramDwellingTime
 };
 
 /************************************************************************************************************
-    HighFrequencyOfUseOfTheTabKey
+    Frequent_tab
 ************************************************************************************************************/
-function HighFrequencyOfUseOfTheTabKey(minSteps, maxScrollingTime, paramDwellingTime, paramScrollingStartingTime){
+function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScrollingStartingTime){
     this.minimumSteps=minSteps || 3;
     this.maximumScrollingTime=maxScrollingTime || 4000;
     this.dwellingTime=paramDwellingTime || 3000;
     this.scrollingStartingTime=paramScrollingStartingTime || 1500;
     this.timer;
-    this.threatName="HighFrequencyOfUseOfTheTabKey",
+    this.threatName="frequent tab",
     this.code="D04";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.elementInicial= false;
@@ -699,72 +699,72 @@ function HighFrequencyOfUseOfTheTabKey(minSteps, maxScrollingTime, paramDwelling
     this.startingTop= 0;
     this.scrollingInitiated= false;
     this.steps=0;
-    var highFrequencyOfUseOfTheTabKey = this;
+    var frequent_tab = this;
     $("a, input, img").on('keydown', function(e){ 
-        if (!highFrequencyOfUseOfTheTabKey.elementInicial){
-             highFrequencyOfUseOfTheTabKey.elementInicial=e.currentTarget;   
+        if (!frequent_tab.elementInicial){
+            frequent_tab.elementInicial=e.currentTarget;   
         }});
     
     $("a, input, img").on('keyup', function(e){     //abria que sumar  otors elemntos como el botton        
         if(e.keyCode==9){
-            if (!highFrequencyOfUseOfTheTabKey.scrollingInitiated) {//Desplazamiento iniciado"
-		highFrequencyOfUseOfTheTabKey.scrollingInitiated=true;
-                if (highFrequencyOfUseOfTheTabKey.MinimumSteps && highFrequencyOfUseOfTheTabKey.MaximumScrollingTime && highFrequencyOfUseOfTheTabKey.DwellingTime){
-                    highFrequencyOfUseOfTheTabKey.minimumSteps=highFrequencyOfUseOfTheTabKey.MinimumSteps;
-                    highFrequencyOfUseOfTheTabKey.maximumScrollingTime= highFrequencyOfUseOfTheTabKey.MaximumScrollingTime;
-                    highFrequencyOfUseOfTheTabKey.dwellingTime=highFrequencyOfUseOfTheTabKey.DwellingTime
+            if (!frequent_tab.scrollingInitiated) {//Desplazamiento iniciado"
+                frequent_tab.scrollingInitiated=true;
+                if (frequent_tab.MinimumSteps && frequent_tab.MaximumScrollingTime && frequent_tab.DwellingTime){
+                    frequent_tab.minimumSteps=frequent_tab.MinimumSteps;
+                    frequent_tab.maximumScrollingTime= frequent_tab.MaximumScrollingTime;
+                    frequent_tab.dwellingTime=frequent_tab.DwellingTime
                 }         
-                highFrequencyOfUseOfTheTabKey.scrollingStartingTime=new Date().getTime();
-		highFrequencyOfUseOfTheTabKey.startingTop=$(window).scrollTop();
+                frequent_tab.scrollingStartingTime=new Date().getTime();
+                frequent_tab.startingTop=$(window).scrollTop();
                 if(!e.shiftKey){
-                    highFrequencyOfUseOfTheTabKey.steps++;
+                    frequent_tab.steps++;
                 }
                 else{
-                    highFrequencyOfUseOfTheTabKey.steps--;
+                    highFrequencyOfrequent_tabfUseOfTheTabKey.steps--;
                 }
             }
             else{
                 if(!e.shiftKey){
-                    highFrequencyOfUseOfTheTabKey.steps++;
+                    frequent_tab.steps++;
                     }
                 else{
-                        highFrequencyOfUseOfTheTabKey.steps--;
+                    frequent_tab.steps--;
                 }     
                 }          
-                highFrequencyOfUseOfTheTabKey.timeStep=new Date().getTime();
-		clearTimeout(highFrequencyOfUseOfTheTabKey.timer);          
-                highFrequencyOfUseOfTheTabKey.elementFinal= e.currentTarget;
-		highFrequencyOfUseOfTheTabKey.timer=setTimeout('logger.highFrequencyOfUseOfTheTabKey.flush(logger)', highFrequencyOfUseOfTheTabKey.dwellingTime);            
+                frequent_tab.timeStep=new Date().getTime();
+		clearTimeout(frequent_tab.timer);          
+        frequent_tab.elementFinal= e.currentTarget;
+		frequent_tab.timer=setTimeout('logger.frequent_tab.flush(logger)', frequent_tab.dwellingTime);            
             }          
     });
 
     this.flush=function(logger){
         var currentTop=$(window).scrollTop();
-        var xpath_final= xpathInstance.getElementXPath(highFrequencyOfUseOfTheTabKey.elementFinal);
-        var xpath_inicial=xpathInstance.getElementXPath(highFrequencyOfUseOfTheTabKey.elementInicial)
-        var xpath=xpathInstance.getElementXPath(highFrequencyOfUseOfTheTabKey.elementFinal);
-        if (!highFrequencyOfUseOfTheTabKey.scrollingEndingTime){
-            highFrequencyOfUseOfTheTabKey.scrollingEndingTime=(new Date().getTime())-highFrequencyOfUseOfTheTabKey.dwellingTime;
+        var xpath_final= xpathInstance.getElementXPath(frequent_tab.elementFinal);
+        var xpath_inicial=xpathInstance.getElementXPath(frequent_tab.elementInicial)
+        var xpath=xpathInstance.getElementXPath(frequent_tab.elementFinal);
+        if (!frequent_tab.scrollingEndingTime){
+            frequent_tab.scrollingEndingTime=(new Date().getTime())-frequent_tab.dwellingTime;
         }
-        scrollingEndingTime=highFrequencyOfUseOfTheTabKey.scrollingEndingTime
-        var scrollingTime=scrollingEndingTime-highFrequencyOfUseOfTheTabKey.scrollingStartingTime;                     
-        if (Math.abs(highFrequencyOfUseOfTheTabKey.steps)>highFrequencyOfUseOfTheTabKey.minimumSteps && scrollingTime < highFrequencyOfUseOfTheTabKey.maximumScrollingTime){
-            if (logger.verbose) console.info((highFrequencyOfUseOfTheTabKey.threatName,{xpath:xpath, timestamp:scrollingEndingTime, time:scrollingTime, initialTop:highFrequencyOfUseOfTheTabKey.startingTop, finalTop:currentTop, steps:Math.abs(highFrequencyOfUseOfTheTabKey.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial}));       
-            logger.logEvent(highFrequencyOfUseOfTheTabKey.threatName,{xpath:xpath,timestamp:scrollingEndingTime, time:scrollingTime, initialTop:highFrequencyOfUseOfTheTabKey.startingTop, finalTop:currentTop, steps:Math.abs(highFrequencyOfUseOfTheTabKey.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial});
+        scrollingEndingTime=frequent_tab.scrollingEndingTime
+        var scrollingTime=scrollingEndingTime-frequent_tab.scrollingStartingTime;                     
+        if (Math.abs(frequent_tab.steps)>frequent_tab.minimumSteps && scrollingTime < frequent_tab.maximumScrollingTime){
+            if (logger.verbose) console.info((frequent_tab.threatName,{xpath:xpath, timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial}));       
+            logger.logEvent(frequent_tab.threatName,{xpath:xpath,timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial});
         }
-        highFrequencyOfUseOfTheTabKey.scrollingInitiated=false;
-        highFrequencyOfUseOfTheTabKey.steps=0;
-        highFrequencyOfUseOfTheTabKey.elementInicial=false;
-        highFrequencyOfUseOfTheTabKey.scrollingEndingTime=false;
+        frequent_tab.scrollingInitiated=false;
+        frequent_tab.steps=0;
+        frequent_tab.elementInicial=false;
+        frequent_tab.scrollingEndingTime=false;
     };
     
     $("input").on('keyup',function(e) {
         if (e.keyCode!==9) {
            if (!e.shiftKey){
-               highFrequencyOfUseOfTheTabKey.scrollingEndingTime=(new Date().getTime())-((new Date().getTime())-highFrequencyOfUseOfTheTabKey.timeStep);
-               highFrequencyOfUseOfTheTabKey.flush(logger);
-            highFrequencyOfUseOfTheTabKey.scrollingInitiated=false;
-            highFrequencyOfUseOfTheTabKey.steps=0;
+            frequent_tab.scrollingEndingTime=(new Date().getTime())-((new Date().getTime())-frequent_tab.timeStep);
+            frequent_tab.flush(logger);
+            frequent_tab.scrollingInitiated=false;
+            frequent_tab.steps=0;
             }     
         };
     });
