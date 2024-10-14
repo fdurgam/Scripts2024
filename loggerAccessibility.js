@@ -691,7 +691,7 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
     this.dwellingTime=paramDwellingTime || 3000;
     this.scrollingStartingTime=paramScrollingStartingTime || 1500;
     this.timer;
-    this.threatName="frequent tab",
+    this.threatName="Frequent tab",
     this.code="D04";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.elementInicial= false;
