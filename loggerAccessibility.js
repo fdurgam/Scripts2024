@@ -41,10 +41,10 @@ var WaitingTime=new Array();
     WaitingTime["A"]=A;
     WaitingTime["submit"]=submit;
     WaitingTime["button"]=button;
-this.valores["ElectronicTextforNonSignificantSpeechSynthesis"]=WaitingTime;      
+this.valores["unhelpful_label"]=WaitingTime;      
 this.valores["ElectronicTextforNonExistentSpeechSynthesis"] =WaitingTime; 
 this.valores["ConfusedSpeechSynthesis"]=WaitingTime;
-this.valores["ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button"]=WaitingTime;
+this.valores["unhelpful_label_for_radio_button"]=WaitingTime;
 var HighFrequencyTab=new Array();   
     HighFrequencyTab["MinimumSteps"]=4;
     HighFrequencyTab["MaximumScrollingTime"]=22580;
@@ -146,7 +146,7 @@ function LoggerAccesibility(serverHost, verbose) {
     this.loadAccesibilityEventsLoggers=function(){ 
         if (logger.verbose) console.info("Loading Accessibility Events: Processing");
             this.deleted_input_content=Parametros(new Deleted_input_content());
-            this.electronicTextforNonSignificantSpeechSynthesis=Parametros(new ElectronicTextforNonSignificantSpeechSynthesis());
+            this.unhelpful_label=Parametros(new Unhelpful_label());
             this.electronicTextforNonExistentSpeechSynthesis=Parametros(new ElectronicTextforNonExistentSpeechSynthesis());     
             this.highFrequencyOfUseOfTheTabKey= Parametros(new HighFrequencyOfUseOfTheTabKey());
             this.navigationPath=Parametros(new NavigationPathAccessibility());  
@@ -389,58 +389,58 @@ function Deleted_input_content(paramOc_Elem){
     });
 }
 /************************************************************************************************************
-    ElectronicTextforNonSignificantSpeechSynthesis
+    Unhelpful_label
 ************************************************************************************************************/
-function ElectronicTextforNonSignificantSpeechSynthesis(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){  
+function Unhelpful_label(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){  
    
-    this.electronicTextforNonSignificantSpeechSynthesis_for_input= Parametros(new ElectronicTextforNonSignificantSpeechSynthesis_for_input(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
-    this.electronicTextforNonSignificantSpeechSynthesis_for_radio_button=Parametros(new ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
-    this.electronicTextforNonSignificantSpeechSynthesis_for_chekbox=Parametros(new ElectronicTextforNonSignificantSpeechSynthesis_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
+    this.unhelpful_label_for_input= Parametros(new Unhelpful_label_for_input(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
+    this.unhelpful_label_for_radio_button=Parametros(new Unhelpful_label_for_radio_button(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
+    this.unhelpful_label_for_chekbox=Parametros(new Unhelpful_label_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime));
 }  
 
-function ElectronicTextforNonSignificantSpeechSynthesis_for_input(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="ElectronicTextforNonSignificantSpeechSynthesis";
+function Unhelpful_label_for_input(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
+    this.threatName="unhelpful_label";
     this.code="D02-for Input";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
     this.maximumWaitingTime=paramMaximumWaitingTime || 9000; // Tiempo maximo  de  espera   
     this.lastElement=null; //Ultimo elemento
     this.now=null;
-    var electronicTextforNonSignificantSpeechSynthesis=this;
+    var unhelpful_label=this;
     
     $("input[type='text']").on('focusout',function(e) {      
-        electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.text["MinimumWaitingTime"]
-        electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.text["MaximumWaitingTime"]
-        electronicTextforNonSignificantSpeechSynthesis.waitingTime = e.timeStamp - electronicTextforNonSignificantSpeechSynthesis.now;
-        waitingTimeInRange = electronicTextforNonSignificantSpeechSynthesis.waitingTime>electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime && electronicTextforNonSignificantSpeechSynthesis.waitingTime < electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime;
+        unhelpful_label.minimumWaitingTime=unhelpful_label.text["MinimumWaitingTime"]
+        unhelpful_label.maximumWaitingTime=unhelpful_label.text["MaximumWaitingTime"]
+        unhelpful_label.waitingTime = e.timeStamp - unhelpful_label.now;
+        waitingTimeInRange = unhelpful_label.waitingTime>unhelpful_label.minimumWaitingTime && unhelpful_label.waitingTime < unhelpful_label.maximumWaitingTime;
         nameOfTarget=e.currentTarget.id; //obtiene en nombre para buscar si hay un label          
         labelForDescription=($("label[for='"+nameOfTarget+"']").length>0); //busca un label para el input si existe por lo   menos 1 retrna true
-        relatedElements = (electronicTextforNonSignificantSpeechSynthesis.lastElement !== null)    
+        relatedElements = (unhelpful_label.lastElement !== null)    
         if(waitingTimeInRange && !labelForDescription && relatedElements){//si se  cumplen todas las condicionees
             var xpath=xpathInstance.getElementXPath(e.currentTarget);//obtiene el xpath del elemento a partir del objeto xpathInstance
-            if (logger.verbose) console.log(electronicTextforNonSignificantSpeechSynthesis.threatName+" on "+xpath+" for "+electronicTextforNonSignificantSpeechSynthesis.waitingTime+"ms ");//muestra por consola la presencia del evento de usabiliadad	
-                console.info(electronicTextforNonSignificantSpeechSynthesis.threatName, {xpath:xpath, waitingTime:electronicTextforNonSignificantSpeechSynthesis.waitingTime})
-                logger.logEvent(electronicTextforNonSignificantSpeechSynthesis.threatName, {xpath:xpath, waitingTime:electronicTextforNonSignificantSpeechSynthesis.waitingTime});//detecta la ocurrencia del evento de usabiliad
+            if (logger.verbose) console.log(unhelpful_label.threatName+" on "+xpath+" for "+unhelpful_label.waitingTime+"ms ");//muestra por consola la presencia del evento de usabiliadad	
+                console.info(unhelpful_label.threatName, {xpath:xpath, waitingTime:unhelpful_label.waitingTime})
+                logger.logEvent(unhelpful_label.threatName, {xpath:xpath, waitingTime:unhelpful_label.waitingTime});//detecta la ocurrencia del evento de usabiliad
             }     
     });  
          
     $("input[type='text']").on('focus', function(e){//Selector  y carga manejador de event
-        electronicTextforNonSignificantSpeechSynthesis.lastElement=e.currentTarget;
-        electronicTextforNonSignificantSpeechSynthesis.now=e.timeStamp;
+        unhelpful_label.lastElement=e.currentTarget;
+        unhelpful_label.now=e.timeStamp;
     });
     
     $("input[type='text']").on('keyup',function(e) {
         if (e.keyCode!==9) {
            if (!e.shiftKey){
-              electronicTextforNonSignificantSpeechSynthesis.lastElement=null;  
+            unhelpful_label.lastElement=null;  
             }     
         };
     });
 };
 
 
-function ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="ElectronicTextforNonSignificantSpeechSynthesis";
+function Unhelpful_label_for_radio_button(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
+    this.threatName="unhelpful_label";
     this.code="D02-for Radio Button";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
@@ -448,38 +448,38 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMi
     this.lastElement=null; //Ultimo elemento
     this.now=null;
     this.list_focus=[];
-    var electronicTextforNonSignificantSpeechSynthesis=this;
+    var unhelpful_label=this;
     
     $("input[type='radio']").on('focusout',function(e) {
-       waitingTime = e.timeStamp - electronicTextforNonSignificantSpeechSynthesis.now;  
-       cant=electronicTextforNonSignificantSpeechSynthesis.list_focus.length;
+       waitingTime = e.timeStamp - unhelpful_label.now;  
+       cant=unhelpful_label.list_focus.length;
        var evento=[];
        evento['element']=e.currentTarget;
        evento['waitingTime']=waitingTime;
        existe=false;
         for (var i = 0; i<cant; i++) {
-            if (e.currentTarget==(electronicTextforNonSignificantSpeechSynthesis.list_focus[i])['element']){
+            if (e.currentTarget==(unhelpful_label.list_focus[i])['element']){
                 existe=true;
             };
         }
         if (!existe){
-            electronicTextforNonSignificantSpeechSynthesis.list_focus[cant]=evento;
+            unhelpful_label.list_focus[cant]=evento;
         }      
      });  
          
     $("input[type='radio']").on('focus', function(e){//Selector  y carga manejador de event
-        electronicTextforNonSignificantSpeechSynthesis.lastElement=e.currentTarget;
-        electronicTextforNonSignificantSpeechSynthesis.now=e.timeStamp;
+        unhelpful_label.lastElement=e.currentTarget;
+        unhelpful_label.now=e.timeStamp;
     });
     	
     $("input[type='submit']").on('keypress', function(e){
         var form=e.currentTarget.form;
-        electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.radio["MinimumWaitingTime"];
-        electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.radio["MaximumWaitingTime"];
-        var cant=electronicTextforNonSignificantSpeechSynthesis.list_focus.length;
+        unhelpful_label.minimumWaitingTime=unhelpful_label.radio["MinimumWaitingTime"];
+        unhelpful_label.maximumWaitingTime=unhelpful_label.radio["MaximumWaitingTime"];
+        var cant=unhelpful_label.list_focus.length;
         var name=[];
         for (var i = 0; i < cant; i ++){
-            var evento=electronicTextforNonSignificantSpeechSynthesis.list_focus[i];
+            var evento=unhelpful_label.list_focus[i];
             if (!name.includes(evento['element'].name)){
                 name[name.length]=evento['element'].name;
             }
@@ -496,13 +496,13 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMi
                     var focado=false
                     var label=false;
                     var waitingTimeInRange=false;
-                    for (var k = 0; k < electronicTextforNonSignificantSpeechSynthesis.list_focus.length; k ++){           
-                        if(elementos[j]==(electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['element']){                     
+                    for (var k = 0; k < unhelpful_label.list_focus.length; k ++){           
+                        if(elementos[j]==(unhelpful_label.list_focus[k])['element']){                     
                             focado=true;
                             if($("label[for='"+elementos[j].id+"']").length>0){
                                 label=true;    
                             }                 
-                            if((electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime']>electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime && (electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime'] < electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime){
+                            if((unhelpful_label.list_focus[k])['waitingTime']>unhelpful_label.minimumWaitingTime && (unhelpful_label.list_focus[k])['waitingTime'] < unhelpful_label.maximumWaitingTime){
                                 waitingTimeInRange=true;
                             }
                             break;
@@ -524,13 +524,13 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMi
                 if (all_focados && !all_label && all_waitingTimeInRange && requerido && !check){
                     for (var t = 0; t < elementos.length; t ++){
                         k=0;
-                        while(elementos[t]!=(electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['element']){
+                        while(elementos[t]!=(.list_focus[k])['element']){
                             k+=1;
                         }        
-                        elemento=((electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['element']);        
+                        elemento=((unhelpful_label.list_focus[k])['element']);        
                         if(!(($("label[for='"+elemento.id+"']").length)>0)){
-                            var xpath=xpathInstance.getElementXPath((electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['element']);
-                            logger.logEvent(electronicTextforNonSignificantSpeechSynthesis.threatName, {xpath:xpath, waitingTime:(electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime']});
+                            var xpath=xpathInstance.getElementXPath((unhelpful_label.list_focus[k])['element']);
+                            logger.logEvent(unhelpful_label.threatName, {xpath:xpath, waitingTime:(unhelpful_label.list_focus[k])['waitingTime']});
                         }                    
                     }   
                 }      
@@ -542,8 +542,8 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_radio_button(paramMi
 
 
 
-function ElectronicTextforNonSignificantSpeechSynthesis_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="ElectronicTextforNonSignificantSpeechSynthesis";
+function Unhelpful_label_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
+    this.threatName="unhelpful_label";
     this.code="D02-For Chekbox";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
@@ -551,33 +551,33 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_chekbox(paramMinimum
     this.lastElement=null; //Ultimo elemento
     this.now=null;
     this.list_focus=[];
-    var electronicTextforNonSignificantSpeechSynthesis=this;
+    var unhelpful_label=this;
     $("input[type='checkbox']").on('focusout',function(e) {
-       waitingTime = e.timeStamp - electronicTextforNonSignificantSpeechSynthesis.now;  
-       cant=electronicTextforNonSignificantSpeechSynthesis.list_focus.length;
+       waitingTime = e.timeStamp - unhelpful_label.now;  
+       cant=unhelpful_label.list_focus.length;
        var evento=[];
        evento['element']=e.currentTarget;
        evento['waitingTime']=waitingTime;
        existe=false;
         for (var i = 0; i<cant; i++) {
-            if (e.currentTarget==(electronicTextforNonSignificantSpeechSynthesis.list_focus[i])['element']){
+            if (e.currentTarget==(unhelpful_label.list_focus[i])['element']){
                 existe=true;      
             };
-        }
+        }unhelpful_label
         if (!existe){
-            electronicTextforNonSignificantSpeechSynthesis.list_focus[cant]=evento;
+            unhelpful_label.list_focus[cant]=evento;
         }
      });  
          
     $("input[type='checkbox']").on('focus', function(e){//Selector  y carga manejador de event
-        electronicTextforNonSignificantSpeechSynthesis.lastElement=e.currentTarget;
-        electronicTextforNonSignificantSpeechSynthesis.now=e.timeStamp; 
+        unhelpful_label.lastElement=e.currentTarget;
+        unhelpful_label.now=e.timeStamp; 
     });
     
     $("input[type='submit']").on('keypress', function(e){   
         form=e.currentTarget.form;
-        electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.checkbox["MinimumWaitingTime"];
-        electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime=electronicTextforNonSignificantSpeechSynthesis.checkbox["MaximumWaitingTime"];
+        unhelpful_label.minimumWaitingTime=unhelpful_label.checkbox["MinimumWaitingTime"];
+        unhelpful_label.maximumWaitingTime=unhelpful_label.checkbox["MaximumWaitingTime"];
         var elementos=$('input:checkbox[required]');
         for (var i = 0; i < elementos.length; i ++){
             if (elementos[i].form==form){
@@ -585,18 +585,18 @@ function ElectronicTextforNonSignificantSpeechSynthesis_for_chekbox(paramMinimum
             var focado=false
             var label=false;
             var waitingTimeInRange=false;
-            for (var k = 0; k < electronicTextforNonSignificantSpeechSynthesis.list_focus.length; k ++){
-                if(elementos[i]==(electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['element']){             
+            for (var k = 0; k < unhelpful_label.list_focus.length; k ++){
+                if(elementos[i]==(unhelpful_label.list_focus[k])['element']){             
                     focado=true;    
                     if($("label[for='"+elementos[i].id+"']").length>0){
                         label=true;    
                             }        
-                    if((electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime']>electronicTextforNonSignificantSpeechSynthesis.minimumWaitingTime && (electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime'] < electronicTextforNonSignificantSpeechSynthesis.maximumWaitingTime){
+                    if((unhelpful_label.list_focus[k])['waitingTime']>unhelpful_label.minimumWaitingTime && (unhelpful_label.list_focus[k])['waitingTime'] < unhelpful_label.maximumWaitingTime){
                         waitingTimeInRange=true;
                         }
                 if (focado && !label && waitingTimeInRange && !check){
                     var xpath=xpathInstance.getElementXPath(elementos[i]);
-                    logger.logEvent(electronicTextforNonSignificantSpeechSynthesis.threatName, {xpath:xpath, waitingTime:(electronicTextforNonSignificantSpeechSynthesis.list_focus[k])['waitingTime']});
+                    logger.logEvent(unhelpful_label.threatName, {xpath:xpath, waitingTime:(unhelpful_label.list_focus[k])['waitingTime']});
                 }   
                   }
             }
