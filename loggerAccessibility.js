@@ -524,7 +524,7 @@ function Unhelpful_label_for_radio_button(paramMinimumWaitingTime, paramMaximumW
                 if (all_focados && !all_label && all_waitingTimeInRange && requerido && !check){
                     for (var t = 0; t < elementos.length; t ++){
                         k=0;
-                        while(elementos[t]!=(.list_focus[k])['element']){
+                        while(elementos[t]!=(unhelpful_label.list_focus[k])['element']){
                             k+=1;
                         }        
                         elemento=((unhelpful_label.list_focus[k])['element']);        
