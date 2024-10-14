@@ -773,9 +773,9 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
 /************************************************************************************************************
     Missing_SR_text
  ************************************************************************************************************/
-function Missing_SR_text(paramMinimumWaitingTime, paramMaximumWaitingTime,paramLastMoveTime ){
+function Missing_SR_text(paramMinimumWaitingTime, paramMaximumWaitingTime,paramLastMoveTime){
     this.code="D03"
-    this.threatName="Missing SR text"; //Amenaza ojo debe ser para indicar la clase en Kobold?
+    this.threatName="Missing_SR_text"; //Amenaza ojo debe ser para indicar la clase en Kobold?
     if (logger.verbose)  console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
     this.maximumWaitingTime=paramMaximumWaitingTime || 5000; // Tiempo maximo  de  espera
