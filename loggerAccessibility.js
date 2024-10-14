@@ -42,7 +42,7 @@ var WaitingTime=new Array();
     WaitingTime["submit"]=submit;
     WaitingTime["button"]=button;
 this.valores["Unhelpful_label"]=WaitingTime;      
-this.valores["Missing_SR_text"] =WaitingTime; 
+this.valores["missing_SR_text"] =WaitingTime; 
 this.valores["ConfusedSpeechSynthesis"]=WaitingTime;
 this.valores["Unhelpful_label_for_radio_button"]=WaitingTime;
 var HighFrequencyTab=new Array();   
@@ -699,7 +699,28 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
     this.startingTop= 0;
     this.scrollingInitiated= false;
     this.steps=0;
+    
+    this.flush=function(logger){
+        var currentTop=$(window).scrollTop();
+        var xpath_final= xpathInstance.getElementXPath(frequent_tab.elementFinal);
+        var xpath_inicial=xpathInstance.getElementXPath(frequent_tab.elementInicial)
+        var xpath=xpathInstance.getElementXPath(frequent_tab.elementFinal);
+        if (!frequent_tab.scrollingEndingTime){
+            frequent_tab.scrollingEndingTime=(new Date().getTime())-frequent_tab.dwellingTime;
+        }
+        scrollingEndingTime=frequent_tab.scrollingEndingTime
+        var scrollingTime=scrollingEndingTime-frequent_tab.scrollingStartingTime;                     
+        if (Math.abs(frequent_tab.steps)>frequent_tab.minimumSteps && scrollingTime < frequent_tab.maximumScrollingTime){
+            if (logger.verbose) console.info((frequent_tab.threatName,{xpath:xpath, timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial}));       
+            logger.logEvent(frequent_tab.threatName,{xpath:xpath,timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial});
+        }
+        frequent_tab.scrollingInitiated=false;
+        frequent_tab.steps=0;
+        frequent_tab.elementInicial=false;
+        frequent_tab.scrollingEndingTime=false;
+    };
     var frequent_tab = this;
+
     $("a, input, img").on('keydown', function(e){ 
         if (!frequent_tab.elementInicial){
             frequent_tab.elementInicial=e.currentTarget;   
@@ -738,25 +759,7 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
             }          
     });
 
-    this.flush=function(logger){
-        var currentTop=$(window).scrollTop();
-        var xpath_final= xpathInstance.getElementXPath(frequent_tab.elementFinal);
-        var xpath_inicial=xpathInstance.getElementXPath(frequent_tab.elementInicial)
-        var xpath=xpathInstance.getElementXPath(frequent_tab.elementFinal);
-        if (!frequent_tab.scrollingEndingTime){
-            frequent_tab.scrollingEndingTime=(new Date().getTime())-frequent_tab.dwellingTime;
-        }
-        scrollingEndingTime=frequent_tab.scrollingEndingTime
-        var scrollingTime=scrollingEndingTime-frequent_tab.scrollingStartingTime;                     
-        if (Math.abs(frequent_tab.steps)>frequent_tab.minimumSteps && scrollingTime < frequent_tab.maximumScrollingTime){
-            if (logger.verbose) console.info((frequent_tab.threatName,{xpath:xpath, timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial}));       
-            logger.logEvent(frequent_tab.threatName,{xpath:xpath,timestamp:scrollingEndingTime, time:scrollingTime, initialTop:frequent_tab.startingTop, finalTop:currentTop, steps:Math.abs(frequent_tab.steps), xpath_final:xpath_final, xpath_inicial:xpath_inicial});
-        }
-        frequent_tab.scrollingInitiated=false;
-        frequent_tab.steps=0;
-        frequent_tab.elementInicial=false;
-        frequent_tab.scrollingEndingTime=false;
-    };
+    
     
     $("input").on('keyup',function(e) {
         if (e.keyCode!==9) {
