@@ -41,10 +41,10 @@ var WaitingTime=new Array();
     WaitingTime["A"]=A;
     WaitingTime["submit"]=submit;
     WaitingTime["button"]=button;
-this.valores["unhelpful_label"]=WaitingTime;      
-this.valores["ElectronicTextforNonExistentSpeechSynthesis"] =WaitingTime; 
+this.valores["Unhelpful_label"]=WaitingTime;      
+this.valores["Missing_SR_text"] =WaitingTime; 
 this.valores["ConfusedSpeechSynthesis"]=WaitingTime;
-this.valores["unhelpful_label_for_radio_button"]=WaitingTime;
+this.valores["Unhelpful_label_for_radio_button"]=WaitingTime;
 var HighFrequencyTab=new Array();   
     HighFrequencyTab["MinimumSteps"]=4;
     HighFrequencyTab["MaximumScrollingTime"]=22580;
@@ -147,7 +147,7 @@ function LoggerAccesibility(serverHost, verbose) {
         if (logger.verbose) console.info("Loading Accessibility Events: Processing");
             this.deleted_input_content=Parametros(new Deleted_input_content());
             this.unhelpful_label=Parametros(new Unhelpful_label());
-            this.electronicTextforNonExistentSpeechSynthesis=Parametros(new ElectronicTextforNonExistentSpeechSynthesis());     
+            this.missing_SR_text=Parametros(new Missing_SR_text());     
             this.highFrequencyOfUseOfTheTabKey= Parametros(new HighFrequencyOfUseOfTheTabKey());
             this.navigationPath=Parametros(new NavigationPathAccessibility());  
             this.bulkAction=new BulkAction();
@@ -771,11 +771,11 @@ function HighFrequencyOfUseOfTheTabKey(minSteps, maxScrollingTime, paramDwelling
 }
 
 /************************************************************************************************************
-    ElectronicTextforNonExistentSpeechSynthesis
+    Missing_SR_text
  ************************************************************************************************************/
-function ElectronicTextforNonExistentSpeechSynthesis(paramMinimumWaitingTime, paramMaximumWaitingTime,paramLastMoveTime ){
+function Missing_SR_text(paramMinimumWaitingTime, paramMaximumWaitingTime,paramLastMoveTime ){
     this.code="D03"
-    this.threatName="ElectronicTextforNonExistentSpeechSynthesis"; //Amenaza ojo debe ser para indicar la clase en Kobold?
+    this.threatName="Missing SR text"; //Amenaza ojo debe ser para indicar la clase en Kobold?
     if (logger.verbose)  console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
     this.maximumWaitingTime=paramMaximumWaitingTime || 5000; // Tiempo maximo  de  espera
@@ -785,62 +785,62 @@ function ElectronicTextforNonExistentSpeechSynthesis(paramMinimumWaitingTime, pa
     this.text=null;
     this.radio=null;
     this.checkbox=null;
-    var electronicTextforNonExistentSpeechSynthesis=this; 
+    var missing_SR_text=this; 
     
     $("input[type='text'],input[type='radio'],input[type='checkbox']").on('focusout',function(e) {
-        electronicTextforNonExistentSpeechSynthesis.waitingTime = e.timeStamp - electronicTextforNonExistentSpeechSynthesis.now;
+        missing_SR_text.waitingTime = e.timeStamp - missing_SR_text.now;
         placeholder=false; 
         switch(e.currentTarget.type) {
             case "text":
                   if (e.currentTarget.placeholder.length>0){
                       placeholder=true;
                     }     
-                 electronicTextforNonExistentSpeechSynthesis.minimumWaitingTime=electronicTextforNonExistentSpeechSynthesis.text["MinimumWaitingTime"];
-                 electronicTextforNonExistentSpeechSynthesis.maximumWaitingTime=electronicTextforNonExistentSpeechSynthesis.text["MaximumWaitingTime"];
+                    missing_SR_text.minimumWaitingTime=missing_SR_text.text["MinimumWaitingTime"];
+                    missing_SR_text.maximumWaitingTime=missing_SR_text.text["MaximumWaitingTime"];
                 break;
             case "radio": 
-                electronicTextforNonExistentSpeechSynthesis.minimumWaitingTime=electronicTextforNonExistentSpeechSynthesis.radio["MinimumWaitingTime"];
-                electronicTextforNonExistentSpeechSynthesis.maximumWaitingTime=electronicTextforNonExistentSpeechSynthesis.radio["MaximumWaitingTime"];
+                    missing_SR_text.minimumWaitingTime=missing_SR_text.radio["MinimumWaitingTime"];
+                    missing_SR_text.maximumWaitingTime=missing_SR_text.radio["MaximumWaitingTime"];
                 break;
             
             case "checkbox":
                
-                electronicTextforNonExistentSpeechSynthesis.minimumWaitingTime=electronicTextforNonExistentSpeechSynthesis.checkbox["MinimumWaitingTime"];
-                electronicTextforNonExistentSpeechSynthesis.maximumWaitingTime=electronicTextforNonExistentSpeechSynthesis.checkbox["MaximumWaitingTime"];
+                    missing_SR_text.minimumWaitingTime=missing_SR_text.checkbox["MinimumWaitingTime"];
+                    missing_SR_text.maximumWaitingTime=missing_SR_text.checkbox["MaximumWaitingTime"];
                 break;   
           } 
           
           
-        waitingTimeInRange = electronicTextforNonExistentSpeechSynthesis.waitingTime>electronicTextforNonExistentSpeechSynthesis.minimumWaitingTime && electronicTextforNonExistentSpeechSynthesis.waitingTime < electronicTextforNonExistentSpeechSynthesis.maximumWaitingTime;
+        waitingTimeInRange = missing_SR_text.waitingTime>missing_SR_text.minimumWaitingTime && missing_SR_text.waitingTime < missing_SR_text.maximumWaitingTime;
         arialabel=true;
         if ((e.currentTarget.attributes["aria-label"])==null){
             arialabel=false;
         }
         nameOfTarget=e.currentTarget.id; //obtiene en nombre para buscar si hay un label               
         labelForDescription=$("label[for='"+nameOfTarget+"']").length>0; //busca un label para el input si existe por lo   menos 1 retrna true
-        relatedElements = ( electronicTextforNonExistentSpeechSynthesis.lastElement !== null);
+        relatedElements = ( missing_SR_text.lastElement !== null);
        
         if(waitingTimeInRange && relatedElements && !labelForDescription && !placeholder && !arialabel){//si se  cumplen todas las condicionees
             var xpath=xpathInstance.getElementXPath(e.currentTarget);//obtiene el xpath del elemento a partir del objeto xpathInstance
-            if (logger.verbose) console.log(electronicTextforNonExistentSpeechSynthesis.threatName+" on "+xpath+" for "+electronicTextforNonExistentSpeechSynthesis.waitingTime+"ms ");//muestra por consola la presencia del evento de usabiliadad
-		console.info(electronicTextforNonExistentSpeechSynthesis.threatName+" on "+xpath+" for "+electronicTextforNonExistentSpeechSynthesis.waitingTime+"ms ");
-            logger.logEvent(electronicTextforNonExistentSpeechSynthesis.threatName, {xpath:xpath, waitingTime:electronicTextforNonExistentSpeechSynthesis.waitingTime});//detecta la ocurrencia del evento de usabiliad
+            if (logger.verbose) console.log(missing_SR_text.threatName+" on "+xpath+" for "+missing_SR_text.waitingTime+"ms ");//muestra por consola la presencia del evento de usabiliadad
+		    console.info(missing_SR_text.threatName+" on "+xpath+" for "+missing_SR_text.waitingTime+"ms ");
+            logger.logEvent(missing_SR_text.threatName, {xpath:xpath, waitingTime:missing_SR_text.waitingTime});//detecta la ocurrencia del evento de usabiliad
         
         }
-            electronicTextforNonExistentSpeechSynthesis.lastMoveTime=e.timeStamp; //guarda el tiempo actual para  calcular el tiempo con el proximo movimiento
-            electronicTextforNonExistentSpeechSynthesis.lastElement=e.currentTarget;
+            missing_SR_text.lastMoveTime=e.timeStamp; //guarda el tiempo actual para  calcular el tiempo con el proximo movimiento
+            missing_SR_text.lastElement=e.currentTarget;
     });  
          
     $("input[type='text'],input[type='radio'],input[type='checkbox']").on('focus', function(e){//Selector  y carga manejador de evento
-	electronicTextforNonExistentSpeechSynthesis.lastElement=e.currentTarget;//finaliza el evento de usabilidad al mover el mouse o hacer click, el usuario dejo de espera el tooltip en el elemento
-        electronicTextforNonExistentSpeechSynthesis.now=e.timeStamp;
+        missing_SR_text.lastElement=e.currentTarget;//finaliza el evento de usabilidad al mover el mouse o hacer click, el usuario dejo de espera el tooltip en el elemento
+        missing_SR_text.now=e.timeStamp;
     });
     
     $("input[type='text'],input[type='radio'],input[type='checkbox']").on('keyup',function(e) {
   
      if (e.keyCode!==9) {
          if (!e.shiftKey){
-            electronicTextforNonExistentSpeechSynthesis.lastElement=null;   
+            missing_SR_text.lastElement=null;   
          }     
      }    
     });   
