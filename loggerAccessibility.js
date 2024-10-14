@@ -399,7 +399,7 @@ function Unhelpful_label(paramMinimumWaitingTime, paramMaximumWaitingTime, param
 }  
 
 function Unhelpful_label_for_input(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="unhelpful_label";
+    this.threatName="Unhelpful_label";
     this.code="D02-for Input";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
@@ -440,7 +440,7 @@ function Unhelpful_label_for_input(paramMinimumWaitingTime, paramMaximumWaitingT
 
 
 function Unhelpful_label_for_radio_button(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="unhelpful_label";
+    this.threatName="Unhelpful_label";
     this.code="D02-for Radio Button";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
@@ -543,7 +543,7 @@ function Unhelpful_label_for_radio_button(paramMinimumWaitingTime, paramMaximumW
 
 
 function Unhelpful_label_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitingTime, paramLastMoveTime){    
-    this.threatName="unhelpful_label";
+    this.threatName="Unhelpful_label";
     this.code="D02-For Chekbox";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.minimumWaitingTime=paramMinimumWaitingTime || 1500; //Tiempo minimo de espera
@@ -563,7 +563,7 @@ function Unhelpful_label_for_chekbox(paramMinimumWaitingTime, paramMaximumWaitin
             if (e.currentTarget==(unhelpful_label.list_focus[i])['element']){
                 existe=true;      
             };
-        }unhelpful_label
+        }
         if (!existe){
             unhelpful_label.list_focus[cant]=evento;
         }
