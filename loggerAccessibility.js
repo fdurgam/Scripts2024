@@ -700,7 +700,9 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
     this.scrollingInitiated= false;
     this.steps=0;
     
-    this.flush=function(logger){
+   
+    var frequent_tab = this;
+    frequent_tab.flush=function(logger){
         var currentTop=$(window).scrollTop();
         var xpath_final= xpathInstance.getElementXPath(frequent_tab.elementFinal);
         var xpath_inicial=xpathInstance.getElementXPath(frequent_tab.elementInicial)
@@ -719,7 +721,6 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
         frequent_tab.elementInicial=false;
         frequent_tab.scrollingEndingTime=false;
     };
-    var frequent_tab = this;
 
     $("a, input, img").on('keydown', function(e){ 
         if (!frequent_tab.elementInicial){
