@@ -155,8 +155,8 @@ function LoggerAccesibility(serverHost, verbose) {
             this.unfilledForm=Parametros(new UnfilledFormAccessibility());     
             this.searchResultWithoutElectronicText=Parametros(new SearchResultWithoutElectronicText());
             this.confusedSpeechSynthesis=Parametros(new ConfusedSpeechSynthesis()); 
-            this.inappropriateTabSequenceForm= Parametros(new InappropriateTabSequence("form"));
-            this.inappropriateTabSequenceTable= Parametros(new InappropriateTabSequence("form"));
+            this.winding_tab_sequenceeForm= Parametros(new Winding_tab_sequence("form"));
+            this.winding_tab_sequenceTable= Parametros(new Winding_tab_sequence("form"));
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
             this.unfilledForm2=new UnfilledForm();
             this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
@@ -702,7 +702,7 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
     
    
     var frequent_tab = this;
-    frequent_tab.flush=function(logger){
+    this.flush=function(logger){
         var currentTop=$(window).scrollTop();
         var xpath_final= xpathInstance.getElementXPath(frequent_tab.elementFinal);
         var xpath_inicial=xpathInstance.getElementXPath(frequent_tab.elementInicial)
@@ -940,8 +940,8 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
 /************************************************************************************************************
 10 - SynthesisInIdiomaDifferentThePage
 ************************************************************************************************************/
-function InappropriateTabSequence(contenedor) {
-    this.threatName = "InappropriateTabSequence2024";
+function Winding_tab_sequence(contenedor) {
+    this.threatName = "Winding_tab_sequence";
     this.code = "E10";
     this.contenedor = contenedor || "form";
     console.info(">>TEST Cargando El Evento " + this.threatName + " - " + this.contenedor + ", Codigo: " + this.code);
