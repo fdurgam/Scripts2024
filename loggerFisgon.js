@@ -4,7 +4,8 @@
 function LoggerFisgon(serverHost,verbose){
     LoggerAccesibility.call(this, serverHost, verbose);
     this.nombre="LoggerFW";
-    loadRefactorings() {
+    this.loadRefactorings=function(){
+    
         console.log("Refactorización en curso..."); // Ejemplo de implementación original
     }
 
