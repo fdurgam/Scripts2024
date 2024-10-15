@@ -781,6 +781,8 @@ function FormSubmission(){
 	this.searchTerms=["search", "buscar", "b&uacute;squeda", "suche", "ricerca"];
 	this.found=false;
 	this.threatName="FormSubmission";
+    this.code="N/A";
+    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
 	var fv_tolerance = 1500;
 	var submitted = false;
 	var formSubmission = this;
