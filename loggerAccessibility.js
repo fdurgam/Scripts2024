@@ -160,6 +160,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
             this.unfilledForm2=new UnfilledForm();
             this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
+            this.formSubmission=new FormSubmission();
             this.marca=new Marcar();
 
             if (logger.verbose) console.info("Loading Accessibility Events: Done");
@@ -773,7 +774,128 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
         };
     });
 }
+/************************************************************************************************************
+											FormSubmission
+************************************************************************************************************/
+function FormSubmission(){
+	this.searchTerms=["search", "buscar", "b&uacute;squeda", "suche", "ricerca"];
+	this.found=false;
+	this.threatName="FormSubmission";
+	var fv_tolerance = 1500;
+	var submitted = false;
+	var formSubmission = this;
 
+
+	this.initialize=function(){
+		if(localStorage.formSubmissionHashCode){
+		   var lastCookie = JSON.parse(localStorage.formSubmissionHashCode);
+		   var emptyInputs= JSON.parse(localStorage.emptyInputs);
+			lastCookie["emptyTextInputs"] = emptyInputs["emptyTextInputs"];
+		   var lastHash = lastCookie.hashCode;
+		   var sourceForm = xpathInstance.getElementByXpath(lastCookie.xpath);
+		   if (sourceForm !== null){
+				validation=(lastHash!=currentHash);
+				var failed = lastCookie.isSearchForm?'false':'true';
+				var validationType=validation?'server':'none';
+				var extraParameters={failed:failed, validation:validationType};
+				if (logger.verbose){
+					validationLogMessage=validation?'with messages':'with no messages';
+					failedText=(failed=='true')?"failed (server) ":"success ";
+					console.log("FormSubmission "+failedText+validationLogMessage+" at "+document.URL+" | "+lastCookie.xpath);
+				};
+				logger.logEvent(formSubmission.threatName, $.extend(lastCookie, extraParameters), true);
+			}
+			else{
+				if (logger.verbose) console.log("FormSubmission success at "+lastCookie.url+" | "+lastCookie.xpath);
+				var extraParameters={failed:'false', validation:'none'};
+				logger.logEvent(formSubmission.threatName, $.extend(lastCookie, extraParameters), true);
+			}
+			localStorage.removeItem("formSubmissionHashCode");
+		}
+
+
+		$('form').on('submit',function(){
+			
+			//array of emtpy text inputs xpaths
+			var getEmptyInputs = function(jQueryForm) {
+				var emptyInputs = jQueryForm.find("input:text").filter(function() { return $(this).val() == ""; });
+				var emptyInputsXpaths = [];
+				for (var i = 0; i < emptyInputs.length; i++) {
+					emptyInputsXpaths[i] = xpathInstance.getElementXPath(emptyInputs[i]);
+				}
+				return emptyInputsXpaths;
+			};
+			event.preventDefault();
+
+			submitted=true;
+			var form=xpathInstance.getElementXPath(this);
+			var element = $(this);
+			var time = logger.formTimer.calculateTime(form);
+			var emptyInputs = getEmptyInputs(element);
+			var cookie = {
+				url:document.URL,
+				xpath:form,
+				hashCode:currentHash,
+				isSearchForm:formSubmission.isSearchForm(element),
+				elementLeft:element.offset().left,
+				elementTop:element.offset().top,
+				elementWidth:element.outerWidth(),
+				elementHeight:element.outerHeight(),
+				elementAlreadySet:true,
+				elementContent:logger.sanitizeContent(element),
+				time:time
+				}
+			//If searchForm, save search param too
+			if(formSubmission.isSearchForm(element)){
+				cookie['searchQuery'] = element.find('input, textarea').not(':input[type=button], :input[type=submit], :input[type=hidden], :input[type=reset]').val();
+				localStorage.formSearchHashCode = JSON.stringify(cookie);
+			}
+			localStorage.formSubmissionHashCode = JSON.stringify(cookie);
+			localStorage.emptyInputs = JSON.stringify({emptyTextInputs: emptyInputs});
+			setTimeout(function(){
+				var newHash=formSubmission.hashCode($(document).text());
+				submitted=false;
+				validation=(newHash!=currentHash);
+				if (logger.verbose){
+					validationLogMessage=validation?'with messages':'with no messages';
+					console.log("FormSubmission failed (client) "+validationLogMessage+" at "+document.URL+" | " + form);};
+				var failed = cookie.isSearchForm?'false':'true';
+				var extraParameters={failed:failed, validation:'client', emptyTextInputs: emptyInputs};
+				logger.logEvent(formSubmission.threatName, $.extend(cookie, extraParameters));
+
+			},fv_tolerance);
+		});
+
+		$(window).on("beforeunload",function(){
+			if(!submitted){
+			  localStorage.removeItem("formSubmissionHashCode");
+			}
+		});
+		var currentHash = this.hashCode($(document).text());
+
+	}
+
+	this.isSearchForm=function(form){
+		for (var i = this.searchTerms.length - 1; i >= 0; i--)
+			this.found=this.found||(form[0].outerHTML.toLowerCase().indexOf(this.searchTerms[i])!=-1);
+		return this.found;
+	};
+
+	this.hashCode=function(string){
+		var hash = 0;
+		var len = string.length;
+		if (len == 0) return hash;
+		for (i = 0; i < string.length; i++) {
+			char = string.charCodeAt(i);
+			hash = ((hash<<5)-hash)+char;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	};
+
+	this.initialize();
+
+}
 /************************************************************************************************************
     Missing_SR_text
  ************************************************************************************************************/
