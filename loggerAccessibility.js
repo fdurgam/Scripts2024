@@ -348,7 +348,7 @@ function UnfilledForm(){
 
 	$(window).on('beforeunload', function() {
 	  var url=document.URL;
-      alert("UnfilledForm")
+      alert("UnfilledForm");
 	  var allowedTypes = ["text","password","textarea","date"];
 	  var forms=document.forms;
 
