@@ -361,7 +361,7 @@ function UnfilledForm(){
 			formStarted = (typeof logger.formTimer.startTimeForForm[key]  !== 'undefined');
 			formSubmitted = (typeof unfilledForm.submittedForms[key]  !== 'undefined');
 			formAbandoned = (formStarted && !formSubmitted);
-            alert(formAbandoned +""+formSubmitted+formAbandoned);
+            alert(formAbandoned);
 			if (formAbandoned){
                 
 		  		var time = logger.formTimer.calculateTime(key);
