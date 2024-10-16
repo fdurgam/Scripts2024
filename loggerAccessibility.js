@@ -348,7 +348,7 @@ function UnfilledForm(){
 
 	$(window).on('beforeunload', function() {
 	  var url=document.URL;
-        alert(unfilledForm.submittedForms[xpathInstance.getElementXPath(this)]);
+      alert("sisi");
 	  var allowedTypes = ["text","password","textarea","date"];
 	  var forms=document.forms;
 
