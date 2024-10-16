@@ -444,6 +444,7 @@ function UnfilledForm(){
 	})
 
 	$(window).on('beforeunload', function() {
+		alert("sisis")
 	  var url=document.URL;
 	  var allowedTypes = ["text","password","textarea","date"];
 	  var forms=document.forms;
@@ -454,7 +455,7 @@ function UnfilledForm(){
 			formSubmitted = (typeof unfilledForm.submittedForms[key]  !== 'undefined');
 			formAbandoned = (formStarted && !formSubmitted);
 			if (formAbandoned){
-				alert("SSS")
+				
 		  		var time = logger.formTimer.calculateTime(key);
 				if (logger.verbose) console.log(unfilledForm.threatName+" on "+key+" on "+url+" after "+time+"ms");
 				logger.logEvent( unfilledForm.threatName, {url:url, xpath:key, time:time}, false);
