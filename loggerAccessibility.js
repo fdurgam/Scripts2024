@@ -349,15 +349,20 @@ function UnfilledForm(){
 	$(window).on('beforeunload', function() {
 	  var url=document.URL;
       alert("sisi");
+      var key = xpathInstance.getElementXPath(this);
+	    unfilledForm.submittedForms[key] = true;
+      
 	  var allowedTypes = ["text","password","textarea","date"];
 	  var forms=document.forms;
 
 	  for(i=0;i<forms.length;i++){
+            alert(forms.length)
 	  		var key = xpathInstance.getElementXPath(forms[i]);
 			formStarted = (typeof logger.formTimer.startTimeForForm[key]  !== 'undefined');
 			formSubmitted = (typeof unfilledForm.submittedForms[key]  !== 'undefined');
 			formAbandoned = (formStarted && !formSubmitted);
 			if (formAbandoned){
+                alert(formAbandoned)
 		  		var time = logger.formTimer.calculateTime(key);
 				if (logger.verbose) console.log(unfilledForm.threatName+" on "+key+" on "+url+" after "+time+"ms");
 				logger.logEvent( unfilledForm.threatName, {url:url, xpath:key, time:time}, false);
