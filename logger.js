@@ -433,7 +433,7 @@ function FormTimer(){
 /************************************************************************************************************
 											UnfilledForm
 ************************************************************************************************************/
-function UnfilledForm(){
+function UnfilledFormNo(){
 	this.submittedForms = [];
 	this.threatName="UnfilledForm";
 	var unfilledForm = this;

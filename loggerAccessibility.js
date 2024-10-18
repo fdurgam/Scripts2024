@@ -158,7 +158,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.winding_tab_sequenceeForm= Parametros(new Winding_tab_sequence("form"));
             this.winding_tab_sequenceTable= Parametros(new Winding_tab_sequence("form"));
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
-            this.unfilledForm2=new UnfilledForm();
+            //this.unfilledForm2=new UnfilledForm();
             this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
             this.formSubmission=new FormSubmission();
             this.marca=new Marcar();
@@ -335,7 +335,9 @@ function UnfilledFormAccessibility(){
     return unfilledForm;
 }
 
-
+/************************************************************************************************************
+    UnfilledForm
+************************************************************************************************************/
 function UnfilledForm(){
 	this.submittedForms = [];
 	this.threatName="UnfilledForm";
