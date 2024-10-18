@@ -954,7 +954,7 @@ function NavigationPath(paramMinimumNavigations, paramMaximumTime, paramPath, pa
 /************************************************************************************************************
 											FormSubmission
 ************************************************************************************************************/
-function FormSubmission(){
+function FormSubmissionNo(){
 	this.searchTerms=["search", "buscar", "b&uacute;squeda", "suche", "ricerca"];
 	this.found=false;
 	this.threatName="FormSubmission";

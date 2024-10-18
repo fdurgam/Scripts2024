@@ -784,7 +784,7 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
 /************************************************************************************************************
 											FormSubmission
 ************************************************************************************************************/
-function FormSubmissionNo(){
+function FormSubmission(){
 	this.searchTerms=["search", "buscar", "b&uacute;squeda", "suche", "ricerca"];
 	this.found=false;
 	this.threatName="FormSubmission";
