@@ -152,7 +152,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.navigationPath=Parametros(new NavigationPathAccessibility());  
             this.bulkAction=new BulkAction();
             this.formTimer=new FormTimer();//Funcion auxiliar
-            this.unfilledForm=Parametros(new UnfilledFormAccessibility());     
+            this.unfilledFormAccessibility=Parametros(new UnfilledFormAccessibility());     
             this.searchResultWithoutElectronicText=Parametros(new SearchResultWithoutElectronicText());
             this.confusedSpeechSynthesis=Parametros(new ConfusedSpeechSynthesis()); 
             this.winding_tab_sequenceeForm= Parametros(new Winding_tab_sequence("form"));
