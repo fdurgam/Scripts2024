@@ -873,12 +873,14 @@ function FormSubmission(){
 				logger.logEvent(formSubmission.threatName, $.extend(cookie, extraParameters));
 
 			},fv_tolerance);
+            alert("submit")
 		});
 
 		$(window).on("beforeunload",function(){
 			if(!submitted){
 			  localStorage.removeItem("formSubmissionHashCode");
 			}
+            alert("beforeunload")
 		});
 		var currentHash = this.hashCode($(document).text());
 
