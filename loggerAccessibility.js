@@ -348,7 +348,7 @@ function UnfilledForm(){
 
 	$(window).on('beforeunload', function() {
 	  var url=document.URL;
-      alert("sisi");
+
       var key = xpathInstance.getElementXPath(this);
 	    unfilledForm.submittedForms[key] = true;
       
@@ -356,12 +356,12 @@ function UnfilledForm(){
 	  var forms=document.forms;
 
 	  for(i=0;i<forms.length;i++){
-            alert(forms.length)
+        
 	  		var key = xpathInstance.getElementXPath(forms[i]);
 			formStarted = (typeof logger.formTimer.startTimeForForm[key]  !== 'undefined');
 			formSubmitted = (typeof unfilledForm.submittedForms[key]  !== 'undefined');
 			formAbandoned = (formStarted && !formSubmitted);
-            alert(formAbandoned);
+     
 			if (formAbandoned){
                 
 		  		var time = logger.formTimer.calculateTime(key);
@@ -824,7 +824,7 @@ function FormSubmission(){
 
 
 		$('form').on('submit',function(){
-			
+            alert("submit: "+this.threatName);
 			//array of emtpy text inputs xpaths
 			var getEmptyInputs = function(jQueryForm) {
 				var emptyInputs = jQueryForm.find("input:text").filter(function() { return $(this).val() == ""; });
@@ -873,14 +873,15 @@ function FormSubmission(){
 				logger.logEvent(formSubmission.threatName, $.extend(cookie, extraParameters));
 
 			},fv_tolerance);
-            alert("submit")
+           
 		});
 
 		$(window).on("beforeunload",function(){
+            alert("beforeunload: "+this.threatName);
 			if(!submitted){
 			  localStorage.removeItem("formSubmissionHashCode");
 			}
-            alert("beforeunload")
+            
 		});
 		var currentHash = this.hashCode($(document).text());
 
