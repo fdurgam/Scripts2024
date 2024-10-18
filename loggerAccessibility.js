@@ -152,6 +152,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.navigationPath=Parametros(new NavigationPathAccessibility());  
             this.bulkAction=new BulkAction();
             this.formTimer=new FormTimer();//Funcion auxiliar
+           
             this.unfilledFormAccessibility=Parametros(new UnfilledFormAccessibility());     
             this.searchResultWithoutElectronicText=Parametros(new SearchResultWithoutElectronicText());
             this.confusedSpeechSynthesis=Parametros(new ConfusedSpeechSynthesis()); 
@@ -160,7 +161,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.fastScrollingWithKeyboard=Parametros(new FastScrollingWithKeyboard());
             //this.unfilledForm2=new UnfilledForm();
             this.contentRemovedWithoutNotice=new ContentRemovedWithoutNotice();
-            this.formSubmission=new FormSubmission();
+            this.formSubmissionAccessibility=new FormSubmissionAccessibility();
             this.marca=new Marcar();
 
             if (logger.verbose) console.info("Loading Accessibility Events: Done");
@@ -784,14 +785,24 @@ function Frequent_tab(minSteps, maxScrollingTime, paramDwellingTime, paramScroll
     });
 }
 /************************************************************************************************************
+											FormSubmissionAccessibility
+************************************************************************************************************/
+function FormSubmissionAccessibility(){
+    var formSubmission=new FormSubmission();
+    formSubmission.code="N/A";
+    formSubmission.threatName="FormSubmissionAccessibility";
+    if (logger.verbose) console.info(">>Cargando El Evento "+formSubmission.threatName +  ", Codigo: " + formSubmission.code);
+    return formSubmission;
+
+
+}
+/************************************************************************************************************
 											FormSubmission
 ************************************************************************************************************/
 function FormSubmission(){
 	this.searchTerms=["search", "buscar", "b&uacute;squeda", "suche", "ricerca"];
 	this.found=false;
 	this.threatName="FormSubmission";
-    this.code="N/A";
-    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
 	var fv_tolerance = 1500;
 	var submitted = false;
 	var formSubmission = this;
