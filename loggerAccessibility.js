@@ -824,7 +824,7 @@ function FormSubmission(){
 
 
 		$('form').on('submit',function(){
-            alert("submit: "+this.threatName);
+           
 			//array of emtpy text inputs xpaths
 			var getEmptyInputs = function(jQueryForm) {
 				var emptyInputs = jQueryForm.find("input:text").filter(function() { return $(this).val() == ""; });
@@ -877,7 +877,7 @@ function FormSubmission(){
 		});
 
 		$(window).on("beforeunload",function(){
-            alert("beforeunload: "+this.threatName);
+    
 			if(!submitted){
 			  localStorage.removeItem("formSubmissionHashCode");
 			}
