@@ -168,8 +168,8 @@ function LoggerAccesibility(serverHost, verbose) {
             console.info(this.unfilledForm)
             
            //2024
-            this.inaccessibleManners=new InaccessibleManners();
-            console.info(this.inaccessibleManners)
+            this.modal_Window_Display=new Modal_Window_Display();
+            console.info(this.modal_Window_Display)
     };
 
     this.loadAccesibilityRefactorings=function(){
@@ -221,13 +221,13 @@ function ContentRemovedWithoutNotice() {
 }
 
 /************************************************************************************************************
-	InaccessibleManners();
+	Modal_Window_Display();
 ************************************************************************************************************/
-function InaccessibleManners() {
+function Modal_Window_Display() {
     this.code = "E2024-01";
-    this.threatName = "InaccessibleManners";
+    this.threatName = "Modal_Window_Display";
     this.mutaciones=[]
-    var inaccessibleManners=this
+    var modal_Window_Display=this
     
     if (logger.verbose) 
         console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
@@ -277,12 +277,12 @@ function InaccessibleManners() {
                      
                     
                         var xpath = xpathInstance.getElementXPath(mutation.target);
-                        if (!inaccessibleManners.mutaciones.includes(xpath)) {
+                        if (!modal_Window_Display.mutaciones.includes(xpath)) {
                             // Agregar el XPath al array de mutaciones
-                            inaccessibleManners.mutaciones.push(xpath);
-                            if (logger.verbose) console.log(inaccessibleManners.threatName, " in ",$targetElement);
+                            modal_Window_Display.mutaciones.push(xpath);
+                            if (logger.verbose) console.log(modal_Window_Display.threatName, " in ",$targetElement);
                        
-                            logger.logEvent(inaccessibleManners.threatName, {xpath:xpath});
+                            logger.logEvent(modal_Window_Display.threatName, {xpath:xpath});
                         }
                        
                        
