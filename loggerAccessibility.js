@@ -435,6 +435,7 @@ function Re_enter_focus_page(){
     this.unfocused=false;
     this.count_unfocused=0;
 	var re_enter_focus_page = this;
+    this.actualURL = window.location.href
     console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
         $(window).on('blur', function() {
             re_enter_focus_page.unfocused=true;
@@ -443,11 +444,13 @@ function Re_enter_focus_page(){
 
             // Detectar cuándo la ventana vuelve a ganar el foco
         $(window).on('focus', function() {
-            if (re_enter_focus_page.unfocused){
+            if (re_enter_focus_page.unfocused && re_enter_focus_page.actualURL === window.location.href){
+
                 re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
                 logger.logEvent(re_enter_focus_page.threatName, {'count':re_enter_focus_page.count_unfocused});          
             }
                 re_enter_focus_page.unfocused=false;
+                re_enter_focus_page.actualURL = window.location.href
         });
 }
 
