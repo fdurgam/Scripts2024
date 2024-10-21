@@ -351,6 +351,7 @@ function UnfilledForm(){
 	this.submittedForms = [];
 	this.threatName="UnfilledForm";
 	var unfilledForm = this;
+    
 
 	$('form').submit(function(e){
   		var key = xpathInstance.getElementXPath(this);
@@ -434,6 +435,7 @@ function Re_enter_focus_page(){
     this.unfocused=false;
     this.count_unfocused=0;
 	var re_enter_focus_page = this;
+    console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
         $(window).on('blur', function() {
             re_enter_focus_page.unfocused=true;
 
