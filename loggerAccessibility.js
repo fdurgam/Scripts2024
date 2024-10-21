@@ -436,15 +436,13 @@ function Re_enter_focus_page(){
 	var re_enter_focus_page = this;
         $(window).on('blur', function() {
             re_enter_focus_page.unfocused=true;
-                console.log('La página ha perdido el foco. Es probable que se haya enfocado una herramienta del navegador.');
-            console.info(re_enter_focus_page.unfocused)
+
             });
 
             // Detectar cuándo la ventana vuelve a ganar el foco
         $(window).on('focus', function() {
             if (re_enter_focus_page.unfocused){
                 re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
-                console.info("Reporta Eventos",re_enter_focus_page.count_unfocused)
                 logger.logEvent(re_enter_focus_page.threatName, {'count':re_enter_focus_page.count_unfocused});          
             }
                 re_enter_focus_page.unfocused=false;
