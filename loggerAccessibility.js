@@ -169,6 +169,9 @@ function LoggerAccesibility(serverHost, verbose) {
             
            //2024
             this.modal_Window_Display=new Modal_Window_Display();
+            this.re_enter_focus_form= new Re_enter_focus_form();
+            this.re_enter_focus_page= new Re_enter_focus_page();
+
             console.info(this.modal_Window_Display)
     };
 
@@ -177,6 +180,11 @@ function LoggerAccesibility(serverHost, verbose) {
         ;
     };
 }
+
+/*******************************************************
+ Form Reentry
+ ******************************************************/
+
 
 /************************************************************************************************************
 	UnannouncedDynamicUpdates();
@@ -374,6 +382,75 @@ function UnfilledForm(){
 	  }
 	});
 }
+
+
+/************************************************************************************************************
+     Re_enter_focus_form
+************************************************************************************************************/
+function Re_enter_focus_form(){
+    this.code="no aplica aun";
+	this.threatName="Re enter focus form";
+    this.unfocused={};
+    this.count_unfocused={};
+	var re_enter_focus_form = this;
+    console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
+    $('Form').on('focusout', function(event) {
+                // Usamos event.relatedTarget para saber a dónde va el foco
+                var newFocus = event.relatedTarget;
+                if (newFocus && !$(this).has(newFocus).length) {
+                    // Si el nuevo elemento enfocado no está dentro del formulario
+                    console.log('focusout: El foco se ha movido a un elemento fuera del formulario:', newFocus);
+                    var key = xpathInstance.getElementXPath(this);
+                    re_enter_focus_form.unfocused[key] = true;
+                }
+            });
+            $('Form').on('focusin', function(event) {
+                
+                var key = xpathInstance.getElementXPath(this);
+                
+                if (re_enter_focus_form.unfocused[key]){
+                    if (key in re_enter_focus_form.count_unfocused){
+                        re_enter_focus_form.count_unfocused[key] = re_enter_focus_form.count_unfocused[key]+1;
+                    }else{
+                        re_enter_focus_form.count_unfocused[key]=1;
+                    }
+                    console.info("Reporta Form_Reentry",re_enter_focus_form.count_unfocused[key])
+                    logger.logEvent(re_enter_focus_form.threatName, {'xpaht':key,'count':re_enter_focus_form.count_unfocused[key],'form':this});          
+                    delete re_enter_focus_form.unfocused[key];
+
+                }
+                console.info("focusin",re_enter_focus_form.unfocused[key],this);
+                }
+            );
+
+}
+
+/************************************************************************************************************
+      Re_enter_focus_page
+************************************************************************************************************/
+function Re_enter_focus_page(){
+    this.code="no aplica aun";
+	this.threatName="Re enter focus page";
+    this.unfocused=false;
+    this.count_unfocused=0;
+	var re_enter_focus_page = this;
+        $(window).on('blur', function() {
+            re_enter_focus_page.unfocused=true;
+                console.log('La página ha perdido el foco. Es probable que se haya enfocado una herramienta del navegador.');
+            console.info(re_enter_focus_page.unfocused)
+            });
+
+            // Detectar cuándo la ventana vuelve a ganar el foco
+        $(window).on('focus', function() {
+            if (re_enter_focus_page.unfocused){
+                re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
+                console.info("Reporta Eventos",re_enter_focus_page.count_unfocused)
+                logger.logEvent(re_enter_focus_page.threatName, {'count':re_enter_focus_page.count_unfocused});          
+            }
+                re_enter_focus_page.unfocused=false;
+        });
+}
+
 /************************************************************************************************************
     Deleted input content
 ************************************************************************************************************/
