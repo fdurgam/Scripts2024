@@ -399,7 +399,7 @@ function Re_enter_focus_form(){
                 var newFocus = event.relatedTarget;
                 if (newFocus && !$(this).has(newFocus).length) {
                     // Si el nuevo elemento enfocado no está dentro del formulario
-                    console.log('focusout: El foco se ha movido a un elemento fuera del formulario:', newFocus);
+                    //console.log('focusout: El foco se ha movido a un elemento fuera del formulario:', newFocus);
                     var key = xpathInstance.getElementXPath(this);
                     re_enter_focus_form.unfocused[key] = true;
                 }
@@ -414,7 +414,7 @@ function Re_enter_focus_form(){
                     }else{
                         re_enter_focus_form.count_unfocused[key]=1;
                     }
-                    console.info("Reporta Form_Reentry",re_enter_focus_form.count_unfocused[key])
+                    //console.info("Reporta Form_Reentry",re_enter_focus_form.count_unfocused[key])
                     logger.logEvent(re_enter_focus_form.threatName, {'xpaht':key,'count':re_enter_focus_form.count_unfocused[key],'form':this});          
                     delete re_enter_focus_form.unfocused[key];
 
