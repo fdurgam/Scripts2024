@@ -227,7 +227,21 @@ function ContentRemovedWithoutNotice() {
         });
    
 }
+/************************************************************************************************************
+	Ineffective_Combo_Box
+************************************************************************************************************/
 
+
+function Ineffective_Combo_Box(){
+    this.code = "E2024-03";
+    this.threatName = " Ineffective_Combo_Box";
+  
+    var ineffective_Combo_Box=this;
+    
+
+    console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
+    
+}
 /************************************************************************************************************
 	Modal_Window_Display();
 ************************************************************************************************************/
@@ -235,7 +249,7 @@ function Modal_Window_Display() {
     this.code = "E2024-01";
     this.threatName = "Modal_Window_Display";
     this.mutaciones=[]
-    var modal_Window_Display=this
+    var modal_Window_Display=this;
     
     if (logger.verbose) 
         console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
