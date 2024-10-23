@@ -234,13 +234,25 @@ function ContentRemovedWithoutNotice() {
 
 function Ineffective_Combo_Box(){
     this.code = "E2024-03";
-    this.threatName = " Ineffective_Combo_Box";
+    this.threatName = "Ineffective_Combo_Box";
   
     var ineffective_Combo_Box=this;
     
 
     console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
-    
+    $("select").on('focus', function(e) {
+        var optionsCount = $(this).find('option').length;
+
+        // Verificar si la cantidad de opciones es menor a 2
+        if (optionsCount < 2) {
+            console.log("El combo box " + $(this).attr("id") + " tiene menos de 2 opciones.");
+            var xpath = xpathInstance.getElementXPath(this);
+            logger.logEvent(ineffective_Combo_Box.threatName, {xpath:xpath});
+        } else {
+            console.log("El combo box " + $(this).attr("id") + " tiene " + optionsCount + " opciones.");
+        }
+    });
+
 }
 /************************************************************************************************************
 	Modal_Window_Display();
