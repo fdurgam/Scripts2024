@@ -247,7 +247,7 @@ function Ineffective_Combo_Box(){
         if (optionsCount < 2) {
             console.log("El combo box " + $(this).attr("id") + " tiene menos de 2 opciones.");
             var xpath = xpathInstance.getElementXPath(this);
-            logger.logEvent(ineffective_Combo_Box.threatName, {xpath:xpath});
+            logger.logEvent(ineffective_Combo_Box.threatName, {xpath:xpath,optionsCount:optionsCount});
         } else {
             console.log("El combo box " + $(this).attr("id") + " tiene " + optionsCount + " opciones.");
         }
