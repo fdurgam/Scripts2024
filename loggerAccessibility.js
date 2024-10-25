@@ -255,6 +255,24 @@ function Ineffective_Combo_Box(){
 
 }
 /************************************************************************************************************
+	Dropdown selector with limited interaction.
+************************************************************************************************************/
+function Dropdown_selector_with_limited_interaction(){
+    this.code = "E2024-06";
+    this.threatName = " Dropdown selector with limited interaction";
+  
+    var selector_with_limited_interaction=this;
+    $('ul.dropdown-content.select-dropdown').on('blur', function() {
+        alert("abandona foco") // Ocultar el dropdown al perder el foco
+    });
+    $('ul.dropdown-content.select-dropdown').on('focus', function() {
+        alert("recibe foco"); // Ocultar el dropdown al perder el foco
+    });
+
+
+}
+
+/************************************************************************************************************
 	Modal_Window_Display();
 ************************************************************************************************************/
 function Modal_Window_Display() {
