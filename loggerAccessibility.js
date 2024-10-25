@@ -262,6 +262,7 @@ function Dropdown_selector_with_limited_interaction(){
     this.threatName = " Dropdown selector with limited interaction";
   
     var selector_with_limited_interaction=this;
+    console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
     $('ul.dropdown-content.select-dropdown').on('blur', function() {
         alert("abandona foco") // Ocultar el dropdown al perder el foco
     });
