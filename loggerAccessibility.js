@@ -257,22 +257,64 @@ function Ineffective_Combo_Box(){
 /************************************************************************************************************
 	Dropdown selector with limited interaction.
 ************************************************************************************************************/
-function Dropdown_selector_with_limited_interaction(){
+function Dropdown_selector_with_limited_interaction() {
     this.code = "E2024-06";
-    this.threatName = " Dropdown selector with limited interaction";
-  
-    var selector_with_limited_interaction=this;
+    this.threatName = "Dropdown selector with limited interaction";
+    this.editado = false;
+    var selector_with_limited_interaction = this;
+
     console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
+
+    // Evento para cuando pierde el foco
     $('ul.dropdown-content.select-dropdown').on('blur', function() {
-        alert("abandona foco") // Ocultar el dropdown al perder el foco
+        console.info("Abandona el foco");
+        // Ocultar el dropdown al perder el foco
+        /*const selectedLi = $(this).find('li.selected');
+        const activeLi = $(this).find('li.active');
+        const selectedText = selectedLi.text().trim();
+        const activeText = activeLi.text().trim();
+        console.info("selectedLi:"+selectedText);
+        if (selectedLi.length > 0 && activeLi.length > 0) {
+            
+              console.info(`Texto del elemento 'selected': ${selectedText}`);
+              console.info("selectedLi:"+selectedLi.text().trim());
+            if (!selectedLi.is(activeLi)) {
+                alert("El dropdown tiene elementos 'selected' y 'active' en diferentes elementos <li>.");
+                console.info("selectedLi:"+selectedLi.text().trim());
+            } else {
+                alert("El dropdown tiene 'selected' y 'active' en el mismo elemento <li>.");
+                console.info("selectedLi:"+selectedLi.text().trim());
+            }
+
+           
+        } else {
+            alert("El dropdown no tiene ambos elementos 'selected' y 'active'.");
+            console.info("selectedLi:"+selectedLi.text().trim());
+        }
+        */
     });
+
+    // Evento para cuando recibe el foco
     $('ul.dropdown-content.select-dropdown').on('focus', function() {
-        alert("recibe foco"); // Ocultar el dropdown al perder el foco
+       console.info("Recibe el foco");
+        /* console.info("Recibe foco"); // Muestra un mensaje cuando recibe el foco
+        selector_with_limited_interaction.active=$(this).find('li.active');
+        selector_with_limited_interaction.selected=$(this).find('li.selected');
+        console.info(selector_with_limited_interaction);
+        */
     });
-
-
+    $('ul.dropdown-content.select-dropdown li').on('keypress', function() {
+        console.info("Keypress")
+        /*
+        console.info("Recibe foco"); // Muestra un mensaje cuando recibe el foco
+        selector_with_limited_interaction.active=$(this).find('li.active');
+        selector_with_limited_interaction.selected=$(this).find('li.selected');
+        console.info(selector_with_limited_interaction);
+        */
+    });
 }
 
+var x = new Dropdown_selector_with_limited_interaction();
 /************************************************************************************************************
 	Modal_Window_Display();
 ************************************************************************************************************/
