@@ -261,58 +261,74 @@ function Dropdown_selector_with_limited_interaction() {
     this.code = "E2024-06";
     this.threatName = "Dropdown selector with limited interaction";
     this.editado = false;
-    var selector_with_limited_interaction = this;
-
+    this.text="";
+    dropdown_selector=this;
+    
     console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
 
-    // Evento para cuando pierde el foco
-    $('ul.dropdown-content.select-dropdown').on('blur', function() {
-        console.info("Abandona el foco");
-        // Ocultar el dropdown al perder el foco
-        /*const selectedLi = $(this).find('li.selected');
-        const activeLi = $(this).find('li.active');
-        const selectedText = selectedLi.text().trim();
-        const activeText = activeLi.text().trim();
-        console.info("selectedLi:"+selectedText);
-        if (selectedLi.length > 0 && activeLi.length > 0) {
-            
-              console.info(`Texto del elemento 'selected': ${selectedText}`);
-              console.info("selectedLi:"+selectedLi.text().trim());
-            if (!selectedLi.is(activeLi)) {
-                alert("El dropdown tiene elementos 'selected' y 'active' en diferentes elementos <li>.");
-                console.info("selectedLi:"+selectedLi.text().trim());
-            } else {
-                alert("El dropdown tiene 'selected' y 'active' en el mismo elemento <li>.");
-                console.info("selectedLi:"+selectedLi.text().trim());
+    const dropdown = $('ul.dropdown-content.select-dropdown')[0];
+
+    // Crear un MutationObserver para observar cambios en el dropdown
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // Si se ha ocultado o mostrado el dropdown
+            if (mutation.target.style.display) {
+                const displayState = mutation.target.style.display;
+                if (displayState === 'block') {
+                    console.info("El dropdown se ha mostrado.");
+                } else if (displayState === 'none') {
+                    console.info("El dropdown se ha ocultado.");
+                }
             }
 
-           
-        } else {
-            alert("El dropdown no tiene ambos elementos 'selected' y 'active'.");
-            console.info("selectedLi:"+selectedLi.text().trim());
-        }
-        */
+            // Verificar cambios en las clases
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                const selectedLi = $(dropdown).find('li.selected');
+                const activeLi = $(dropdown).find('li.active');
+
+                if (selectedLi.length > 0) {
+                    console.info(`Se agregó 'selected': ${selectedLi.text().trim()}`);
+                    if (dropdown_selector.text==""){
+                        dropdown_selector.text=selectedLi.text().trim();
+                    }
+                    console.info(dropdown_selector.text);
+
+                }
+                
+                if (activeLi.length > 0) {
+                    console.info(`Se agregó 'active': ${activeLi.text().trim()}`);
+                }
+                console.info("selected:"+ selectedLi.text().trim());
+                console.info("active:"+activeLi.text().trim());
+                console.info(activeLi.length > 0);
+                console.info(selectedLi.length > 0)
+                console.info(selectedLi.text().trim()!==activeLi.text().trim())
+                var xpath = xpathInstance.getElementXPath(mutation.target)
+                if  (activeLi.length > 0 &&  selectedLi.length > 0 && selectedLi.text().trim()!==activeLi.text().trim()){
+                    console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
+                    logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
+                }
+                console.info(!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim());
+                
+                if  (!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim()){
+                    console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
+                    logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
+                }
+
+            }
+        });
     });
 
-    // Evento para cuando recibe el foco
-    $('ul.dropdown-content.select-dropdown').on('focus', function() {
-       console.info("Recibe el foco");
-        /* console.info("Recibe foco"); // Muestra un mensaje cuando recibe el foco
-        selector_with_limited_interaction.active=$(this).find('li.active');
-        selector_with_limited_interaction.selected=$(this).find('li.selected');
-        console.info(selector_with_limited_interaction);
-        */
-    });
-    $('ul.dropdown-content.select-dropdown li').on('keypress', function() {
-        console.info("Keypress")
-        /*
-        console.info("Recibe foco"); // Muestra un mensaje cuando recibe el foco
-        selector_with_limited_interaction.active=$(this).find('li.active');
-        selector_with_limited_interaction.selected=$(this).find('li.selected');
-        console.info(selector_with_limited_interaction);
-        */
-    });
+    // Configurar el observer para observar cambios en las clases y en el estilo
+    observer.observe(dropdown, { attributes: true, childList: true, subtree: true });
+
+    // Evento para cuando el dropdown pierde el foco
+  
+ 
+
+    
 }
+
 
 var x = new Dropdown_selector_with_limited_interaction();
 /************************************************************************************************************
