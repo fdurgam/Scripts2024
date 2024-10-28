@@ -262,6 +262,7 @@ function Dropdown_selector_with_limited_interaction() {
     this.threatName = "Dropdown selector with limited interaction";
     this.editado = false;
     this.text="";
+    this.elementos=[];
     dropdown_selector=this;
     
     console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
@@ -304,15 +305,20 @@ function Dropdown_selector_with_limited_interaction() {
                 console.info(selectedLi.length > 0)
                 console.info(selectedLi.text().trim()!==activeLi.text().trim())
                 var xpath = xpathInstance.getElementXPath(mutation.target)
-                if  (activeLi.length > 0 &&  selectedLi.length > 0 && selectedLi.text().trim()!==activeLi.text().trim()){
-                    console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
-                    logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
-                }
-                console.info(!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim());
-                
-                if  (!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim()){
-                    console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
-                    logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
+                if (!dropdown_selector.elementos.includes(this)){
+                    
+                    if  (activeLi.length > 0 &&  selectedLi.length > 0 && selectedLi.text().trim()!==activeLi.text().trim()){
+                        console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
+                        logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
+                        dropdown_selector.elementos.push(this)
+                    }
+                    console.info(!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim());
+                    
+                    if  (!activeLi.length &&  selectedLi.length > 0 && selectedLi.text().trim()!==dropdown_selector.text.trim()){
+                        console.info("reporta evento " + JSON.stringify({'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text}));
+                        logger.logEvent(dropdown_selector.threatName, {xpath:xpath,'active': activeLi.text(), 'selected': selectedLi.text(), 'inicial': dropdown_selector.text});
+                        dropdown_selector.elementos.push(this)
+                    }
                 }
 
             }
