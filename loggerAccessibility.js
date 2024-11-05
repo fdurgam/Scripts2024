@@ -269,7 +269,10 @@ function Dropdown_selector_with_limited_interaction() {
     console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
 
     const dropdown = $('ul.dropdown-content.select-dropdown')[0];
-
+    if (!dropdown) {
+        console.warn("El dropdown no existe. No se ejecutará el evento.");
+        return; // Salir de la función si no existe el dropdown
+    }
     // Crear un MutationObserver para observar cambios en el dropdown
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
