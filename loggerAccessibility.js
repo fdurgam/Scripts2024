@@ -337,7 +337,7 @@ function Dropdown_selector_with_limited_interaction() {
 }
 
 
-var x = new Dropdown_selector_with_limited_interaction();
+//var x = new Dropdown_selector_with_limited_interaction();
 
 /************************************************************************************************************
 	Modal_Window_Display();
