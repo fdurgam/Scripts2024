@@ -257,7 +257,7 @@ function Ineffective_Combo_Box(){
 /************************************************************************************************************
 	Dropdown selector with limited interaction.
 ************************************************************************************************************/
-/*
+
 function Dropdown_selector_with_limited_interaction() {
     this.code = "E2024-06";
     this.threatName = "Dropdown selector with limited interaction";
@@ -338,7 +338,7 @@ function Dropdown_selector_with_limited_interaction() {
 
 
 var x = new Dropdown_selector_with_limited_interaction();
-/*
+
 /************************************************************************************************************
 	Modal_Window_Display();
 ************************************************************************************************************/
