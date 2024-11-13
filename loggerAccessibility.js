@@ -681,7 +681,13 @@ class SkippedFocusElement {
             const isCorrectType = validTypes.includes(previousElement.nodeName) && 
                                   (previousElement.type !== "submit" || previousElement.matches("button[type='submit'], input[type='submit']"));
 
-            if (isCorrectType) {
+            // Verifica que tanto el elemento actual como el anterior estén dentro del <body> y no en una ventana modal
+            const isInBody = this.isInBody(currentElement) && this.isInBody(previousElement);
+
+            // Verifica que el elemento anterior no sea de tipo hidden
+            const isNotHidden = previousElement.type !== "hidden";
+
+            if (isCorrectType && isInBody && isNotHidden) {
                 // Verifica si el elemento previo fue enfocado anteriormente
                 const wasPreviousFocused = this.focusedElements.has(previousElement);
                 const isVisible = this.isElementInViewport(previousElement);
@@ -702,7 +708,7 @@ class SkippedFocusElement {
                     logger.logEvent(this.threatName, { xpath: xpath, xpath_previus: xpath_previus });
                 }
             } else {
-                console.log("El elemento previo no es de un tipo válido enfocable.");
+                console.log("El elemento previo no es de un tipo válido, no está en el <body> o es de tipo hidden.");
             }
         } else {
             console.log("No hay elemento previo enfocable.");
@@ -733,6 +739,16 @@ class SkippedFocusElement {
             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
+    }
+
+    isInBody(element) {
+        // Verifica si el elemento tiene a <body> como ancestro
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent.tagName === 'BODY') return true;
+            parent = parent.parentElement;
+        }
+        return false;
     }
 
     getElementXPath(element) {
