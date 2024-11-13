@@ -650,7 +650,8 @@ class SkippedFocusElement {
     constructor() {
         this.code = "no aplica aun";
         this.threatName = "Skipped_Focus_Element";
-        this.focusedElements = new Set(); // Conjunto para almacenar los elementos que fueron enfocados
+        this.focusedElements = new Set(); // Conjunto para almacenar los elementos enfocados
+        this.modalVisible = false; // Para saber si el modal está visible
 
         console.info(">> Cargando el evento " + this.threatName + ", Código: " + this.code);
 
@@ -659,9 +660,47 @@ class SkippedFocusElement {
             .forEach(element => {
                 element.addEventListener('focus', this.handleFocus.bind(this));
             });
+
+        // Configura el MutationObserver para detectar cambios en el DOM y verificar visibilidad de modales
+        this.setupMutationObserver();
+    }
+
+    setupMutationObserver() {
+        // Observa los cambios en los atributos de los elementos, como `style` (para visibilidad)
+        const observer = new MutationObserver(this.checkModalVisibility.bind(this));
+
+        // Observa el `body` en busca de cambios en los hijos (como los modales)
+        observer.observe(document.body, {
+            childList: true,  // Detecta nodos hijos añadidos o eliminados
+            subtree: true,    // Incluye todos los descendientes
+            attributes: true, // Detecta cambios de atributos (como `style`)
+            attributeFilter: ['style'] // Solo cambios en el atributo `style`
+        });
+    }
+
+    checkModalVisibility(mutations) {
+        mutations.forEach(mutation => {
+            // Verifica si el cambio ocurrió en un modal (o un contenedor con clase 'modal' o 'overlay')
+            if (mutation.target.classList && (mutation.target.classList.contains('modal') || mutation.target.id === 'overlay')) {
+                // Verifica si el overlay se vuelve visible
+                if (this.isElementVisible(mutation.target)) {
+                    this.modalVisible = true;
+                    console.log('Modal ahora visible');
+                } else {
+                    this.modalVisible = false;
+                    console.log('Modal ahora oculto');
+                }
+            }
+        });
     }
 
     handleFocus(e) {
+        // Verifica si hay un modal visible
+        if (this.modalVisible) {
+            console.log("Se detectó un foco, pero el modal está visible, ignorando el evento.");
+            return; // Si el modal está visible, ignoramos el foco
+        }
+
         const currentElement = e.target;
 
         // Agrega el elemento actual al conjunto de elementos enfocados
@@ -682,7 +721,7 @@ class SkippedFocusElement {
             const isCorrectType = validTypes.includes(previousElement.nodeName) && 
                                   (previousElement.type !== "submit" || previousElement.matches("button[type='submit'], input[type='submit']"));
 
-            // Verifica que tanto el elemento actual como el anterior estén dentro del <body> y no en una ventana modal
+            // Verifica que tanto el elemento actual como el anterior estén dentro del <body>
             const isInBody = this.isInBody(currentElement) && this.isInBody(previousElement);
             const isNotHidden = previousElement.type !== "hidden";
             const isSameForm = this.isInSameForm(currentElement, previousElement);
@@ -724,6 +763,12 @@ class SkippedFocusElement {
         } else {
             console.log("No hay elemento previo enfocable.");
         }
+    }
+
+    isElementVisible(el) {
+        // Verifica si el elemento tiene estilos que lo hagan visible
+        const style = window.getComputedStyle(el);
+        return style.visibility !== 'hidden' && style.display !== 'none' && el.offsetWidth > 0 && el.offsetHeight > 0;
     }
 
     getSortedFocusableElements() {
@@ -810,6 +855,7 @@ class SkippedFocusElement {
         return false;
     }
 }
+
 
 
 // Inicia la clase
