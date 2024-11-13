@@ -674,25 +674,35 @@ class SkippedFocusElement {
 
         // Si no es el primer elemento, obtenemos el anterior
         if (currentIndex > 0) {
-            const previousElement = sortedElements[currentIndex - 1];
+            let previousElement = sortedElements[currentIndex - 1];
 
-            // Verifica si el elemento previo fue enfocado anteriormente
-            const wasPreviousFocused = this.focusedElements.has(previousElement);
-            const isVisible = this.isElementInViewport(previousElement);
+            // Verifica que el elemento previo sea del tipo deseado
+            const validTypes = ["INPUT", "SELECT", "A", "BUTTON", "TEXTAREA"];
+            const isCorrectType = validTypes.includes(previousElement.nodeName) && 
+                                  (previousElement.type !== "submit" || previousElement.matches("button[type='submit'], input[type='submit']"));
 
-            console.log("Elemento anterior:", previousElement, 
-                        "¿Fue enfocado antes?", wasPreviousFocused, 
-                        "¿Está visible?", isVisible);
+            if (isCorrectType) {
+                // Verifica si el elemento previo fue enfocado anteriormente
+                const wasPreviousFocused = this.focusedElements.has(previousElement);
+                const isVisible = this.isElementInViewport(previousElement);
 
-            // Verifica la condición de que el previo no fue enfocado y está visible
-            if (!wasPreviousFocused && isVisible) {
-                console.info("Responder evento");
+                console.log("Elemento anterior:", previousElement, 
+                            "¿Fue enfocado antes?", wasPreviousFocused, 
+                            "¿Está visible?", isVisible);
 
-                // Obtén el XPath del elemento actual
-                const xpath = this.getElementXPath(currentElement);
+                // Verifica la condición de que el previo no fue enfocado y está visible
+                if (!wasPreviousFocused && isVisible) {
+                    console.info("Reportar evento");
 
-                // Llamar al logger con el threatName y el XPath
-                logger.logEvent(this.threatName, { xpath: xpath });
+                    // Obtén el XPath del elemento actual
+                    const xpath_previus = this.getElementXPath(previousElement);
+                    const xpath = this.getElementXPath(currentElement);
+
+                    // Llamar al logger con el threatName y el XPath
+                    logger.logEvent(this.threatName, { xpath: xpath, xpath_previus: xpath_previus });
+                }
+            } else {
+                console.log("El elemento previo no es de un tipo válido enfocable.");
             }
         } else {
             console.log("No hay elemento previo enfocable.");
