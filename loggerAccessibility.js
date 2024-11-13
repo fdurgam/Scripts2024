@@ -646,56 +646,168 @@ function Deleted_input_content(paramOc_Elem){
     }
 }*/
 // Si no es el primer elemento, obtenemos el anterior
-if (currentIndex > 0) {
-    let previousElement = sortedElements[currentIndex - 1];
+class SkippedFocusElement {
+    constructor() {
+        this.code = "no aplica aun";
+        this.threatName = "Skipped_Focus_Element";
+        this.focusedElements = new Set(); // Conjunto para almacenar los elementos que fueron enfocados
 
-    // Verifica que el elemento previo sea del tipo deseado
-    const validTypes = ["INPUT", "SELECT", "A", "BUTTON", "TEXTAREA"];
-    const isCorrectType = validTypes.includes(previousElement.nodeName) && 
-                          (previousElement.type !== "submit" || previousElement.matches("button[type='submit'], input[type='submit']"));
+        console.info(">> Cargando el evento " + this.threatName + ", Código: " + this.code);
 
-    // Verifica que tanto el elemento actual como el anterior estén dentro del <body> y no en una ventana modal
-    const isInBody = this.isInBody(currentElement) && this.isInBody(previousElement);
-    const isNotHidden = previousElement.type !== "hidden";
-    const isSameForm = this.isInSameForm(currentElement, previousElement);
-
-    if (isCorrectType && isInBody && isNotHidden && isSameForm) {
-        // Verifica si el elemento previo fue enfocado anteriormente
-        const wasPreviousFocused = this.focusedElements.has(previousElement);
-        const isVisible = this.isElementInViewport(previousElement);
-
-        console.log("Elemento anterior:", previousElement, 
-                    "¿Fue enfocado antes?", wasPreviousFocused, 
-                    "¿Está visible?", isVisible);
-
-        // Verifica la condición de que el previo no fue enfocado y está visible
-        if (!wasPreviousFocused && isVisible) {
-            console.info("Reportar evento");
-
-            // Obtén el XPath del elemento actual
-            var xpathPrevious = this.getElementXPath(previousElement);
-            var xpath = this.getElementXPath(currentElement);
-
-            // Obtener el HTML de ambos elementos
-            var htmlElement = currentElement.innerHTML;
-            var htmlPrevious = previousElement.innerHTML;
-
-            // Llamar al logger con el threatName y el XPath
-            logger.logEvent(this.threatName, {
-                xpath: xpath,
-                xpathPrevious: xpathPrevious,
-                htmlElement: htmlElement,
-                htmlPrevious: htmlPrevious
+        // Asocia el evento focus a todos los elementos enfocados de la página
+        document.querySelectorAll("input, select, a, button, button[type='submit'], textarea, input[type='submit']")
+            .forEach(element => {
+                element.addEventListener('focus', this.handleFocus.bind(this));
             });
-        }
-    } else {
-        console.log("El elemento previo no es de un tipo válido, no está en el <body>, es de tipo hidden, o no están en el mismo formulario.");
     }
-} else {
-    console.log("No hay elemento previo enfocable.");
+
+    handleFocus(e) {
+        const currentElement = e.target;
+
+        // Agrega el elemento actual al conjunto de elementos enfocados
+        this.focusedElements.add(currentElement);
+
+        // Obtiene todos los elementos enfocados y los ordena por su posición en el viewport
+        const sortedElements = this.getSortedFocusableElements();
+
+        // Encuentra el índice del elemento actual en el array ordenado
+        const currentIndex = sortedElements.indexOf(currentElement);
+
+        // Si no es el primer elemento, obtenemos el anterior
+        if (currentIndex > 0) {
+            let previousElement = sortedElements[currentIndex - 1];
+
+            // Verifica que el elemento previo sea del tipo deseado
+            const validTypes = ["INPUT", "SELECT", "A", "BUTTON", "TEXTAREA"];
+            const isCorrectType = validTypes.includes(previousElement.nodeName) && 
+                                  (previousElement.type !== "submit" || previousElement.matches("button[type='submit'], input[type='submit']"));
+
+            // Verifica que tanto el elemento actual como el anterior estén dentro del <body> y no en una ventana modal
+            const isInBody = this.isInBody(currentElement) && this.isInBody(previousElement);
+            const isNotHidden = previousElement.type !== "hidden";
+            const isSameForm = this.isInSameForm(currentElement, previousElement);
+
+            if (isCorrectType && isInBody && isNotHidden && isSameForm) {
+                // Verifica si el elemento previo fue enfocado anteriormente
+                const wasPreviousFocused = this.focusedElements.has(previousElement);
+                const isVisible = this.isElementInViewport(previousElement);
+
+                console.log("Elemento anterior:", previousElement, 
+                            "¿Fue enfocado antes?", wasPreviousFocused, 
+                            "¿Está visible?", isVisible);
+
+                // Verifica la condición de que el previo no fue enfocado y está visible
+                if (!wasPreviousFocused && isVisible) {
+                    console.info("Reportar evento");
+
+                    // Obtén el XPath del elemento actual
+                    var xpathPrevious = this.getElementXPath(previousElement);
+                    var xpath = this.getElementXPath(currentElement);
+
+                    // Obtener el HTML de ambos elementos
+                    var htmlElement = currentElement.innerHTML;
+                    var htmlPrevious = previousElement.innerHTML;
+
+                    // Llamar al logger con el threatName y el XPath
+                    logger.logEvent(this.threatName, {
+                        xpath: xpath,
+                        xpathPrevious: xpathPrevious,
+                        htmlElement: htmlElement,
+                        htmlPrevious: htmlPrevious
+                    });
+                }
+            } else {
+                console.log("El elemento previo no es de un tipo válido, no está en el <body>, es de tipo hidden, o no están en el mismo formulario.");
+            }
+        } else {
+            console.log("No hay elemento previo enfocable.");
+        }
+    }
+
+    getSortedFocusableElements() {
+        const focusableElements = Array.from(document.querySelectorAll("input, select, a, button, textarea, input[type='submit']"));
+        
+        // Ordena los elementos en función de su posición en el viewport
+        return focusableElements.sort((a, b) => {
+            const rectA = a.getBoundingClientRect();
+            const rectB = b.getBoundingClientRect();
+
+            // Compara las posiciones en el eje Y, luego en el eje X si son iguales
+            if (rectA.top === rectB.top) {
+                return rectA.left - rectB.left;
+            }
+            return rectA.top - rectB.top;
+        });
+    }
+
+    isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    isInBody(element) {
+        // Verifica si el elemento tiene a <body> como ancestro
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent.tagName === 'BODY') return true;
+            parent = parent.parentElement;
+        }
+        return false;
+    }
+
+    getElementXPath(element) {
+        // Esta función genera el XPath del elemento
+        let path = [];
+        while (element && element.nodeType === 1) {  // Mientras sea un nodo de tipo Element
+            let index = 1;
+            let sibling = element.previousElementSibling;
+            while (sibling) {
+                if (sibling.nodeName === element.nodeName) index++;
+                sibling = sibling.previousElementSibling;
+            }
+            path.unshift(`${element.nodeName.toLowerCase()}[${index}]`);
+            element = element.parentNode;
+        }
+        return path.length ? `/${path.join('/')}` : null;
+    }
+
+    isInSameForm(currentElement, previousElement) {
+        // Verifica si ambos elementos están en el mismo formulario
+        let currentParent = currentElement.parentElement;
+        let previousParent = previousElement.parentElement;
+
+        // Recorremos los padres de ambos elementos hasta encontrar el formulario
+        while (currentParent) {
+            if (currentParent.tagName === 'FORM') break;
+            currentParent = currentParent.parentElement;
+        }
+
+        while (previousParent) {
+            if (previousParent.tagName === 'FORM') break;
+            previousParent = previousParent.parentElement;
+        }
+
+        // Devuelve true si ambos elementos están en el mismo formulario
+        return currentParent === previousParent && currentParent !== null;
+    }
+
+    isInModal(element) {
+        // Verifica si el elemento está dentro de una ventana modal
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent.classList && parent.classList.contains('modal')) { // Aquí se asume que el modal tiene una clase 'modal'
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        return false;
+    }
 }
-
-
 
 // Inicia la clase
 
