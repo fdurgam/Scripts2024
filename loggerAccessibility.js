@@ -683,6 +683,7 @@ class SkippedFocusElement {
 
             // Verifica que tanto el elemento actual como el anterior estén dentro del <body> y no en una ventana modal
             const isInBody = this.isInBody(currentElement) && this.isInBody(previousElement);
+            const isNotInModal = !this.isInModal(currentElement) && !this.isInModal(previousElement);
 
             // Verifica que el elemento anterior no sea de tipo hidden
             const isNotHidden = previousElement.type !== "hidden";
@@ -690,7 +691,7 @@ class SkippedFocusElement {
             // Verifica que ambos elementos estén en el mismo formulario
             const isSameForm = this.isInSameForm(currentElement, previousElement);
 
-            if (isCorrectType && isInBody && isNotHidden && isSameForm) {
+            if (isCorrectType && isInBody && isNotHidden && isSameForm && isNotInModal) {
                 // Verifica si el elemento previo fue enfocado anteriormente
                 const wasPreviousFocused = this.focusedElements.has(previousElement);
                 const isVisible = this.isElementInViewport(previousElement);
@@ -720,7 +721,7 @@ class SkippedFocusElement {
                     });
                 }
             } else {
-                console.log("El elemento previo no es de un tipo válido, no está en el <body>, es de tipo hidden o no están en el mismo formulario.");
+                console.log("El elemento previo no es de un tipo válido, no está en el <body>, es de tipo hidden, no están en el mismo formulario, o están dentro de un modal.");
             }
         } else {
             console.log("No hay elemento previo enfocable.");
@@ -780,12 +781,38 @@ class SkippedFocusElement {
     }
 
     isInSameForm(currentElement, previousElement) {
-        // Verifica si ambos elementos están dentro del mismo formulario
-        const currentForm = currentElement.closest('form');
-        const previousForm = previousElement.closest('form');
-        return currentForm === previousForm; // Devuelve true si ambos están en el mismo formulario
+        // Verifica si ambos elementos están en el mismo formulario
+        let currentParent = currentElement.parentElement;
+        let previousParent = previousElement.parentElement;
+
+        // Recorremos los padres de ambos elementos hasta encontrar el formulario
+        while (currentParent) {
+            if (currentParent.tagName === 'FORM') break;
+            currentParent = currentParent.parentElement;
+        }
+
+        while (previousParent) {
+            if (previousParent.tagName === 'FORM') break;
+            previousParent = previousParent.parentElement;
+        }
+
+        // Devuelve true si ambos elementos están en el mismo formulario
+        return currentParent === previousParent && currentParent !== null;
+    }
+
+    isInModal(element) {
+        // Verifica si el elemento está dentro de una ventana modal
+        let parent = element.parentElement;
+        while (parent) {
+            if (parent.classList && parent.classList.contains('modal')) { // Aquí se asume que el modal tiene una clase 'modal'
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        return false;
     }
 }
+
 
 // Inicia la clase
 
