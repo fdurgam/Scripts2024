@@ -701,13 +701,20 @@ class SkippedFocusElement {
                     console.info("Reportar evento");
 
                     // Obtén el XPath del elemento actual
-                    var xpath_previus = this.getElementXPath(previousElement);
+                    var xpathPrevious = this.getElementXPath(previousElement);
                     var xpath = this.getElementXPath(currentElement);
-                    var html_element=currentElement.innerHTML;
-                    var html_previus=previousElement.innerHTML;
+
+                    // Obtener el HTML de ambos elementos
+                    var htmlElement = currentElement.innerHTML;
+                    var htmlPrevious = previousElement.innerHTML;
 
                     // Llamar al logger con el threatName y el XPath
-                    logger.logEvent(this.threatName, { xpath: xpath, xpath_previus: xpath_previus,html_element:html_element,html_previus:html_previus });
+                    logger.logEvent(this.threatName, {
+                        xpath: xpath,
+                        xpathPrevious: xpathPrevious,
+                        htmlElement: htmlElement,
+                        htmlPrevious: htmlPrevious
+                    });
                 }
             } else {
                 console.log("El elemento previo no es de un tipo válido, no está en el <body> o es de tipo hidden.");
