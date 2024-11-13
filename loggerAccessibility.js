@@ -687,7 +687,10 @@ class SkippedFocusElement {
             // Verifica que el elemento anterior no sea de tipo hidden
             const isNotHidden = previousElement.type !== "hidden";
 
-            if (isCorrectType && isInBody && isNotHidden) {
+            // Verifica que ambos elementos estén en el mismo formulario
+            const isSameForm = this.isInSameForm(currentElement, previousElement);
+
+            if (isCorrectType && isInBody && isNotHidden && isSameForm) {
                 // Verifica si el elemento previo fue enfocado anteriormente
                 const wasPreviousFocused = this.focusedElements.has(previousElement);
                 const isVisible = this.isElementInViewport(previousElement);
@@ -717,7 +720,7 @@ class SkippedFocusElement {
                     });
                 }
             } else {
-                console.log("El elemento previo no es de un tipo válido, no está en el <body> o es de tipo hidden.");
+                console.log("El elemento previo no es de un tipo válido, no está en el <body>, es de tipo hidden o no están en el mismo formulario.");
             }
         } else {
             console.log("No hay elemento previo enfocable.");
@@ -774,6 +777,13 @@ class SkippedFocusElement {
             element = element.parentNode;
         }
         return path.length ? `/${path.join('/')}` : null;
+    }
+
+    isInSameForm(currentElement, previousElement) {
+        // Verifica si ambos elementos están dentro del mismo formulario
+        const currentForm = currentElement.closest('form');
+        const previousForm = previousElement.closest('form');
+        return currentForm === previousForm; // Devuelve true si ambos están en el mismo formulario
     }
 }
 
