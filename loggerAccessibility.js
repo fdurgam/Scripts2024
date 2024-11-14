@@ -604,7 +604,12 @@ function Focused_Element_with_Intermediate_Text(paramOc_Elem) {
     this.firstFocusedElement = null;
     this.focusedElement = null;
     var focused_Element_with_Intermediate_Text = this; // Para almacenar el primer elemento enfocado
-
+    $(document).on("keydown", function(event) {
+        // Verifica si la tecla presionada es Tab (código 9)
+        if (event.keyCode === 9) {
+            focused_Element_with_Intermediate_Text.focusedWithTab = true;
+        }
+    });
     // Detecta cuando un elemento recibe el foco
     $("input[type='text'], input[type='email'], textarea, button, input[type='submit'], a").on("focus", function () {
         focused_Element_with_Intermediate_Text.focusedElement = $(this);  // El elemento que recibe el foco
@@ -622,22 +627,37 @@ function Focused_Element_with_Intermediate_Text(paramOc_Elem) {
         if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
             var elementsBetween = $('*').filter(':visible'); // Todos los elementos visibles
             var foundText = false;
-
+            var elementsInBetween = []; 
             elementsBetween.each(function () {
                 var currentElement = $(this);
 
                 // Aquí podrías agregar la lógica de lo que deseas hacer con currentElement
                 if (currentElement.text().trim() !== "" && currentElement.is('label, p, div') && (!currentElement.is('label') || !currentElement.attr('for')))  {
                     
+                    var firstPos = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().top;
+                    var secondPos = focused_Element_with_Intermediate_Text.secondFocusedElement.offset().top;
+                    var currentPos = currentElement.offset().top;
+                    //console.info("fir",firstPos)
+                    //console.info("sec",secondPos)
+                    //console.info("element",currentPos)
                     
-                    
-                    console.info("Texto encontrado:", currentElement.text());
-                    foundText = true;
+                    if ((currentPos > firstPos && currentPos < secondPos) || (currentPos > secondPos && currentPos < firstPos)) {
+                        console.info("Texto encontrado entre los elementos enfocados:", currentElement.text());
+                        foundText = true;
+                        elementsInBetween.push(currentElement)
+                    }
                 }
             });
 
             if (!foundText) {
-                console.info("No se encontró texto entre los elementos enfocados.");
+                // Verifica si el foco se recibió con Tab
+                if (focused_Element_with_Intermediate_Text.focusedWithTab) {
+                    console.info("El foco fue recibido con la tecla Tab, pero no se encontró texto entre los elementos enfocados.");
+                } else {
+                    console.info("El foco NO fue recibido con la tecla Tab y no se encontró texto entre los elementos enfocados.");
+                }
+            } else {
+                console.info("Elementos encontrados entre los enfocados:", elementsInBetween);
             }
         }
     });
