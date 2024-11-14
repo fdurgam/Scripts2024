@@ -172,7 +172,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.modal_Window_Display=new Modal_Window_Display();
             this.re_enter_focus_form= new Re_enter_focus_form();
             this.re_enter_focus_page= new Re_enter_focus_page();
-            this.focused_Element_with_Apparently_Related_Subsequent_Text=new Focused_Element_with_Apparently_Related_Subsequent_Text();
+
 
             console.info(this.modal_Window_Display)
     };
@@ -596,11 +596,6 @@ function Deleted_input_content(paramOc_Elem){
     });
 }
 
-
-
-/************************************************************************************************************
-    Focused Element with Apparently Related Subsequent Tex
-************************************************************************************************************/
 
 /************************************************************************************************************
      Skipped_Focus_Element
