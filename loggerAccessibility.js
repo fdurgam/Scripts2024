@@ -172,6 +172,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.modal_Window_Display=new Modal_Window_Display();
             this.re_enter_focus_form= new Re_enter_focus_form();
             this.re_enter_focus_page= new Re_enter_focus_page();
+            this.focused_Element_with_Apparently_Related_Subsequent_Text=new Focused_Element_with_Apparently_Related_Subsequent_Text();
 
             console.info(this.modal_Window_Display)
     };
@@ -595,57 +596,20 @@ function Deleted_input_content(paramOc_Elem){
     });
 }
 
+
+
+/************************************************************************************************************
+    Focused Element with Apparently Related Subsequent Tex
+************************************************************************************************************/
+function Focused_Element_with_Apparently_Related_Subsequent_Text(paramOc_Elem){
+    this.code="E01";
+    this.threatName="Focused_Element_with_Apparently_Related_Subsequent_Text";
+    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
+    var focused_Element_with_Apparently_Related_Subsequent_Text = this;
+}
 /************************************************************************************************************
      Skipped_Focus_Element
 ************************************************************************************************************/
-/*function Skipped_Focus_Element() {
-    this.code = "no aplica aun";
-    this.threatName = "Skipped_Focus_Element";
-    this.focusedElements = new Set(); // Conjunto para almacenar los elementos que fueron enfocados
-
-    console.info(">> Cargando el evento " + this.threatName + ", Código: " + this.code);
-
-    // Asocia el evento focus a todos los elementos enfocables de la página
-   $(":input, select, a, button, button[type='submit'], textarea, input[type='submit']").on('focus', (e) => {
-        const currentElement = e.target;
-
-        // Agrega el elemento actual al conjunto de elementos enfocados
-        this.focusedElements.add(currentElement);
-
-        // Obtiene el elemento anterior en el DOM
-        const previousElement = $(currentElement).prevAll(":input, a, button").first();
-
-        if (previousElement.length) {
-            // Verifica si el elemento previo fue enfocado anteriormente
-            const wasPreviousFocused = this.focusedElements.has(previousElement[0]);
-            const isVisible = isElementInViewport(previousElement[0]);
-            
-            console.log("Elemento anterior:", previousElement[0], 
-                        "¿Fue enfocado antes?", wasPreviousFocused, 
-                        "¿Está visible?", isVisible);
-
-            // Verifica la condición de que el previo no fue enfocado y está visible
-            if (!wasPreviousFocused && isVisible) {
-                console.info("Responder evento");
-                // Aquí puedes poner la lógica adicional que necesites
-            }
-        } else {
-            console.log("No hay elemento previo enfocable.");
-        }
-    });
-
-    // Función para verificar si un elemento está visible en el área del viewport
-    function isElementInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-}*/
-// Si no es el primer elemento, obtenemos el anterior
 class SkippedFocusElement {
     constructor() {
         this.code = "no aplica aun";
