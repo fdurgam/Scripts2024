@@ -601,15 +601,7 @@ function Deleted_input_content(paramOc_Elem){
 /************************************************************************************************************
     Focused Element with Apparently Related Subsequent Tex
 ************************************************************************************************************/
-function ElementoEnfocadoConTextoRelacionadoAparentemente(paramOc_Elem) {
-    this.codigo = "No aplica";
-    this.nombreAmenaza = "ElementoEnfocadoConTextoRelacionadoAparentemente";
 
-    if (logger.verbose) {
-        console.info(">> Cargando el evento " + this.nombreAmenaza + ", Código: " + this.codigo);
-    }
-
-    var elementoEnfocadoConTextoRelacionadoAparentemente = this;
 /************************************************************************************************************
      Skipped_Focus_Element
 ************************************************************************************************************/
