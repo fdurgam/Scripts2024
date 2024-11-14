@@ -633,9 +633,9 @@ function Focused_Element_with_Intermediate_Text() {
             }
         }
 
-        console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement);
-        console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement);
-        console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
+        //console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement);
+        //console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement);
+        //console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
 
         // Verifica si ambos elementos enfocados están definidos
         if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
@@ -652,14 +652,14 @@ function Focused_Element_with_Intermediate_Text() {
 
                 var currentPosTop = currentElement.offset().top;
                 var currentPosLeft = currentElement.offset().left;
-                console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement,firstPosTop,firstPosLeft);
-                console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement,secondPosTop,secondPosLeft);
-                console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
-                console.info("Comparando:", currentElement, "Con posiciones:",currentPosTop,currentPosLeft );
-                console.info("alto primoer",firstElementHeight);
-                console.info("alto segundo",secondElementHeight);
+                //console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement,firstPosTop,firstPosLeft);
+                //console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement,secondPosTop,secondPosLeft);
+                //console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
+                //console.info("Comparando:", currentElement, "Con posiciones:",currentPosTop,currentPosLeft );
+                //console.info("alto primoer",firstElementHeight);
+                //console.info("alto segundo",secondElementHeight);
                 
-                console.info(currentPosTop,currentPosLeft)
+                //console.info(currentPosTop,currentPosLeft)
                 var firstElementHeight = focused_Element_with_Intermediate_Text.firstFocusedElement.outerHeight(); // Altura del primer elemento
                 var secondElementHeight = focused_Element_with_Intermediate_Text.secondFocusedElement.outerHeight(); // Altura del segundo elemento
                 var currentElementHeight=currentElement.outerHeight();
@@ -681,7 +681,7 @@ function Focused_Element_with_Intermediate_Text() {
             });
             
             
-            console.info("Elementos enfocados entre ambos:", elementsInBetween);
+           ///console.info("Elementos enfocados entre ambos:", elementsInBetween);
 
             var elementText = [];
             elementsInBetween.forEach(function(element) {
@@ -701,6 +701,11 @@ function Focused_Element_with_Intermediate_Text() {
                 console.info("Elementos de texto entre ambos:", elementText);
                 if (elementText.length==elementsInBetween.length){
                     console.info("Reportar evento")
+                    var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
+                    var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
+                    focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement
+                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
+                        xpath_first: xpath_first,xpath_second:xpath_second,elementText:elementText});
                 }
             }
         }
