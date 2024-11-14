@@ -601,12 +601,15 @@ function Deleted_input_content(paramOc_Elem){
 /************************************************************************************************************
     Focused Element with Apparently Related Subsequent Tex
 ************************************************************************************************************/
-function Focused_Element_with_Apparently_Related_Subsequent_Text(paramOc_Elem){
-    this.code="No aplica";
-    this.threatName="Focused_Element_with_Apparently_Related_Subsequent_Text";
-    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
-    var focused_Element_with_Apparently_Related_Subsequent_Text = this;
-}
+function ElementoEnfocadoConTextoRelacionadoAparentemente(paramOc_Elem) {
+    this.codigo = "No aplica";
+    this.nombreAmenaza = "ElementoEnfocadoConTextoRelacionadoAparentemente";
+
+    if (logger.verbose) {
+        console.info(">> Cargando el evento " + this.nombreAmenaza + ", Código: " + this.codigo);
+    }
+
+    var elementoEnfocadoConTextoRelacionadoAparentemente = this;
 /************************************************************************************************************
      Skipped_Focus_Element
 ************************************************************************************************************/
