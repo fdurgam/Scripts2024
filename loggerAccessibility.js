@@ -598,15 +598,54 @@ function Deleted_input_content(paramOc_Elem){
 /************************************************************************************************************
     Focused Element with Apparently Related Subsequent Text
 ************************************************************************************************************/
-function Focused_Element_with_Apparently_Related_Subsequent_Text(paramOc_Elem){
-    this.code="no aplica";
-    this.threatName="Focused_Element_with_Apparently_Related_Subsequent_Text";
-    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
-    var deleted_input_content = this;
- 
-   
- 
+function Focused_Element_with_Intermediate_Text(paramOc_Elem) {
+    this.code = "no aplica";
+    this.threatName = "FocusedElementWithIntermediateText";
+    this.firstFocusedElement = null;
+    this.focusedElement = null;
+    var focused_Element_with_Intermediate_Text = this; // Para almacenar el primer elemento enfocado
+
+    // Detecta cuando un elemento recibe el foco
+    $("input[type='text'], input[type='email'], textarea, button, input[type='submit'], a").on("focus", function () {
+        focused_Element_with_Intermediate_Text.focusedElement = $(this);  // El elemento que recibe el foco
+        if (focused_Element_with_Intermediate_Text.firstFocusedElement) {
+            focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+        } else {
+            focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+            focused_Element_with_Intermediate_Text.secondFocusedElement = null;
+        }
+
+        console.info("First", focused_Element_with_Intermediate_Text.firstFocusedElement);
+        console.info("Second", focused_Element_with_Intermediate_Text.secondFocusedElement);
+
+        // Verifica si ambos elementos enfocados existen
+        if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
+            var elementsBetween = $('*').filter(':visible'); // Todos los elementos visibles
+            var foundText = false;
+
+            elementsBetween.each(function () {
+                var currentElement = $(this);
+
+                // Aquí podrías agregar la lógica de lo que deseas hacer con currentElement
+                if (currentElement.text().trim() !== "" && currentElement.is('label, p, div') && (!currentElement.is('label') || !currentElement.attr('for')))  {
+                    
+                    
+                    
+                    console.info("Texto encontrado:", currentElement.text());
+                    foundText = true;
+                }
+            });
+
+            if (!foundText) {
+                console.info("No se encontró texto entre los elementos enfocados.");
+            }
+        }
+    });
 }
+x=Focused_Element_with_Intermediate_Text();
+
+
+
 /************************************************************************************************************
      Skipped_Focus_Element
 ************************************************************************************************************/
