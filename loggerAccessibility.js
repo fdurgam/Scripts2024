@@ -602,7 +602,7 @@ function Deleted_input_content(paramOc_Elem){
     Focused Element with Apparently Related Subsequent Tex
 ************************************************************************************************************/
 function Focused_Element_with_Apparently_Related_Subsequent_Text(paramOc_Elem){
-    this.code="E01";
+    this.code="No aplica";
     this.threatName="Focused_Element_with_Apparently_Related_Subsequent_Text";
     if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     var focused_Element_with_Apparently_Related_Subsequent_Text = this;
