@@ -669,7 +669,7 @@ function Focused_Element_with_Intermediate_Text() {
 
                     // Verifica si el elemento es enfocable (botones, campos de texto, etc.)
                     if (currentElement.is('input, button, a, select, textarea, label, [tabindex], [contenteditable]')) {
-                        console.info("Elemento interactivo detectado:", currentElement);
+                       // console.info("Elemento interactivo detectado:", currentElement);
                         elementsInBetween.push(currentElement); // Agregar el elemento al array
                     }
 
@@ -698,9 +698,9 @@ function Focused_Element_with_Intermediate_Text() {
                     // console.info("El foco NO fue recibido con la tecla Tab y no se encontró texto entre los elementos enfocados.");
                 }
             } else {
-                console.info("Elementos de texto entre ambos:", elementText);
+              //  console.info("Elementos de texto entre ambos:", elementText);
                 if (elementText.length==elementsInBetween.length){
-                    console.info("Reportar evento")
+                   // console.info("Reportar evento")
                     var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
                     var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
                     focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement
