@@ -621,7 +621,7 @@ function Focused_Element_with_Intermediate_Text() {
     });
 
     // Detecta cuando un elemento recibe el foco
-    $("input[type='text'], input[type='email'], textarea,password, button, input[type='submit'], a").on("focus", function() {
+    $("input[type='text'], input[type='email'], input[type='password'], textarea, button, input[type='submit'], a").on("focus", function() {
         focused_Element_with_Intermediate_Text.focusedElement = $(this);
 
         if (!focused_Element_with_Intermediate_Text.firstFocusedElement) {
