@@ -689,7 +689,7 @@ function Focused_Element_with_Intermediate_Text() {
                     //logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween});
                     logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
                         xpath_first:xpath_first,
-                        xpath: xpath_second,
+                        xpath:xpath,
                         elementsInBetween:elementsInBetween
 
                     });    
