@@ -679,8 +679,8 @@ function Focused_Element_with_Intermediate_Text() {
                 if (elementsInBetween.every(el => el.is('div, label, p'))) {
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
                     
-                    var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
+                    var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
+                    var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
                     logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
                         xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween
                     });
@@ -706,6 +706,7 @@ class SkippedFocusElement {
     constructor() {
         this.code = "no aplica aun";
         this.threatName = "Skipped_Focus_Element";
+        if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
         this.focusedElements = new Set(); // Conjunto para almacenar los elementos enfocados
         this.modalVisible = false; // Para saber si el modal está visible
 
