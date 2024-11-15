@@ -1695,7 +1695,7 @@ function Winding_tab_sequence(contenedor) {
                         if ((mean + standardDeviation) < Math.abs(lastTop - secondLastTop)) {
                             var xpath=xpathInstance.getElementXPath(e.currentTarget)
                             logger.logEvent(event.threatName, {
-                                xpath:xpath,
+                                'xpath':xpath,
                                 'contenedor': event.contenedor,
                                 'origen': eventQueueCopy[eventQueueCopy.length - 2].xpath,
                                 "destino": eventQueueCopy[eventQueueCopy.length - 1].xpath,
