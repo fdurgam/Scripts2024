@@ -538,7 +538,7 @@ function Re_enter_focus_form(){
                         re_enter_focus_form.count_unfocused[key]=1;
                     }
                     //console.info("Reporta Form_Reentry",re_enter_focus_form.count_unfocused[key])
-                    logger.logEvent(re_enter_focus_form.threatName, {'xpaht':key,'count':re_enter_focus_form.count_unfocused[key]});          
+                    logger.logEvent(re_enter_focus_form.threatName, {xpaht:key,'count':re_enter_focus_form.count_unfocused[key]});          
                     delete re_enter_focus_form.unfocused[key];
 
                 }
