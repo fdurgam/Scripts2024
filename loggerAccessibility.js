@@ -569,8 +569,8 @@ function Re_enter_focus_page(){
             if (re_enter_focus_page.unfocused && re_enter_focus_page.actualURL === window.location.href){
 
                 re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
-                var xpath=xpathInstance.getElementXPath(e.currentTarget)
-                logger.logEvent(re_enter_focus_page.threatName, {xpath:xpath,'count':re_enter_focus_page.count_unfocused});          
+            
+                logger.logEvent(re_enter_focus_page.threatName, {'count':re_enter_focus_page.count_unfocused});          
             }
                 re_enter_focus_page.unfocused=false;
                 re_enter_focus_page.actualURL = window.location.href
