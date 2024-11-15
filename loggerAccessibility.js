@@ -605,6 +605,7 @@ function Deleted_input_content(paramOc_Elem){
 function Focused_Element_with_Intermediate_Text() {
     this.code = "no aplica";
     this.threatName = "Focused Element with Intermediate Text";
+    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     this.firstFocusedElement = null;
     this.secondFocusedElement = null;
     this.focusedElement = null;
