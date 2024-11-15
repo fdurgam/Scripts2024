@@ -565,7 +565,7 @@ function Re_enter_focus_page(){
             });
 
             // Detectar cuándo la ventana vuelve a ganar el foco
-        $(window).on('focus', function(e) {
+        $(window).on('focus', function() {
             if (re_enter_focus_page.unfocused && re_enter_focus_page.actualURL === window.location.href){
 
                 re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
