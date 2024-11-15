@@ -608,6 +608,7 @@ function Focused_Element_with_Intermediate_Text() {
     this.firstFocusedElement = null;
     this.secondFocusedElement = null;
     this.focusedElement = null;
+    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
     var focused_Element_with_Intermediate_Text = this; // Referencia a esta instancia
 
     $(document).on("keydown", function(event) {
