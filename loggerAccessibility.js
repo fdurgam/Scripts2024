@@ -641,7 +641,7 @@ function Focused_Element_with_Intermediate_Text() {
             var elementsInBetween = [];
             var foundText = false;
 
-            console.info("Elementos visibles:", elementsBetween);
+            //console.info("Elementos visibles:", elementsBetween);
            
             elementsBetween.each(function() {
                 var currentElement = $(this);
@@ -657,7 +657,7 @@ function Focused_Element_with_Intermediate_Text() {
                 if (currentPosTop >= firstPosTop + firstElementHeight && 
                     currentPosTop + currentElementHeight <= secondPosTop) {
                     
-                    console.info("Elemento detectado:", currentElement, currentElement[0].nodeName);
+                   // console.info("Elemento detectado:", currentElement, currentElement[0].nodeName);
 
                     // Verifica si el elemento es un `div` o contiene texto relevante
                     if (currentElement.is('label, p, div') || currentElement.text().trim() !== "") {
@@ -666,29 +666,28 @@ function Focused_Element_with_Intermediate_Text() {
 
                         // Identificar específicamente un `div`
                         if (currentElement.is('div')) {
-                            console.info("Div detectado:", currentElement);
+                           // console.info("Div detectado:", currentElement);
                         }
                     }
                 }
             });
-            console.info("Elemento primero",focused_Element_with_Intermediate_Text.firstFocusedElement);
-            console.info("Elemeneto secon", focused_Element_with_Intermediate_Text.secondFocusedElement)
-            console.info("Elementos enfocados entre ambos:", elementsInBetween);
+           // console.info("Elemento primero",focused_Element_with_Intermediate_Text.firstFocusedElement);
+            //console.info("Elemeneto secon", focused_Element_with_Intermediate_Text.secondFocusedElement)
+            //console.info("Elementos enfocados entre ambos:", elementsInBetween);
 
             if (foundText) {
-                console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
+              //  console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
                 if (elementsInBetween.every(el => el.is('div, label, p'))) {
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
                     
                     var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
                     var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
-                        xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween
+                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween
                     });
                    
                 }
             } else {
-                console.info("No se encontró texto entre los elementos enfocados.");
+                //console.info("No se encontró texto entre los elementos enfocados.");
             }
         }
     });
