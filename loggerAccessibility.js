@@ -684,12 +684,14 @@ function Focused_Element_with_Intermediate_Text() {
                 if (elementsInBetween.every(el => el.is('div, label, p'))) {
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
                     var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
+                    var xpath = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
                     //logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween});
                     logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
                         xpath_first:xpath_first,
-                        xpath_second: xpath_second
+                        xpath: xpath_second,
+                        elementsInBetween:elementsInBetween
+
                     });    
                 }
                    
