@@ -565,11 +565,12 @@ function Re_enter_focus_page(){
             });
 
             // Detectar cuándo la ventana vuelve a ganar el foco
-        $(window).on('focus', function() {
+        $(window).on('focus', function(e) {
             if (re_enter_focus_page.unfocused && re_enter_focus_page.actualURL === window.location.href){
 
                 re_enter_focus_page.count_unfocused=re_enter_focus_page.count_unfocused+1
-                logger.logEvent(re_enter_focus_page.threatName, {'count':re_enter_focus_page.count_unfocused});          
+                var xpath=xpathInstance.getElementXPath(e.currentTarget)
+                logger.logEvent(re_enter_focus_page.threatName, {xpath:xpath,'count':re_enter_focus_page.count_unfocused});          
             }
                 re_enter_focus_page.unfocused=false;
                 re_enter_focus_page.actualURL = window.location.href
