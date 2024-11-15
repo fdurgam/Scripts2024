@@ -682,8 +682,12 @@ function Focused_Element_with_Intermediate_Text() {
                     var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
                     var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween});
-                    }
+                    //logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween});
+                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
+                        xpath_first:xpath_first,
+                        xpath_second: xpath_second
+                    });    
+                }
                    
                 } else {
                 //console.info("No se encontró texto entre los elementos enfocados.");
