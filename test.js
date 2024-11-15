@@ -37,7 +37,7 @@ function Focused_Element_with_Intermediate_Text() {
             var foundText = false;
 
             console.info("Elementos visibles:", elementsBetween);
-
+           
             elementsBetween.each(function() {
                 var currentElement = $(this);
                 var firstPosTop = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().top;
@@ -66,32 +66,24 @@ function Focused_Element_with_Intermediate_Text() {
                     }
                 }
             });
-
+            console.info("Elemento primero",focused_Element_with_Intermediate_Text.firstFocusedElement);
+            console.info("Elemeneto secon", focused_Element_with_Intermediate_Text.secondFocusedElement)
             console.info("Elementos enfocados entre ambos:", elementsInBetween);
 
             if (foundText) {
                 console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
                 if (elementsInBetween.every(el => el.is('div, label, p'))) {
                     console.info("Reportar evento: todos los elementos intermedios son texto/div.");
-                    /*
+                    
                     var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
                     var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
                     logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
                         xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween
                     });
-                    */
+                   
                 }
-            }  else {
-                console.info("Elementos de texto entre ambos:", elementText);
-                if (elementText.length==elementsInBetween.length){
-                    console.info("Reportar evento")
-               /*     var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
-                    focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
-                        xpath_first: xpath_first,xpath_second:xpath_second,elementText:elementText});
-                */
-                        }
+            } else {
+                console.info("No se encontró texto entre los elementos enfocados.");
             }
         }
     });
