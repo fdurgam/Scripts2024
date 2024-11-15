@@ -602,117 +602,99 @@ function Deleted_input_content(paramOc_Elem){
 ************************************************************************************************************/
 
 
+
 function Focused_Element_with_Intermediate_Text() {
-    this.code = "no aplica";
-    this.threatName = "Focused Element with Intermediate Text";
-    this.firstFocusedElement = null;
-    this.secondFocusedElement = null;
-    this.focusedElement = null;
-    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
-    var focused_Element_with_Intermediate_Text = this; // Referencia a esta instancia
-
-    $(document).on("keydown", function(event) {
-        // Verifica si la tecla presionada es Tab (código 9)
-        if (event.keyCode === 9) {
-            focused_Element_with_Intermediate_Text.focusedWithTab = true;
-        }
-    });
-
-    // Detecta cuando un elemento recibe el foco
-    $("input[type='text'], input[type='email'], textarea, button, input[type='submit'], a").on("focus", function() {
-        focused_Element_with_Intermediate_Text.focusedElement = $(this); // El elemento que recibe el foco actual
-
-        if (!focused_Element_with_Intermediate_Text.firstFocusedElement) {
-            focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
-        } else {
-            if (!focused_Element_with_Intermediate_Text.secondFocusedElement) {
-                focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
-            } else {
-                // Se establece el segundo como primero y el nuevo enfoque como segundo
-                focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.secondFocusedElement;
-                focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+        this.code = "no aplica";
+        this.threatName = "Focused Element with Intermediate Text";
+        this.firstFocusedElement = null;
+        this.secondFocusedElement = null;
+        this.focusedElement = null;
+        this.focusedWithTab = false;
+    
+        var focused_Element_with_Intermediate_Text = this; // Referencia a esta instancia
+    
+        // Detecta si la tecla Tab fue utilizada
+        $(document).on("keydown", function(event) {
+            if (event.keyCode === 9) {
+                focused_Element_with_Intermediate_Text.focusedWithTab = true;
             }
-        }
-
-        //console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement);
-        //console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement);
-        //console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
-
-        // Verifica si ambos elementos enfocados están definidos
-        if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
-            var elementsBetween = $('*').filter(':visible'); // Todos los elementos visibles
-            var foundText = false;
-            var elementsInBetween = [];
-
-            elementsBetween.each(function() {
-                var currentElement = $(this);
-                var firstPosTop = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().top;
-                var secondPosTop = focused_Element_with_Intermediate_Text.secondFocusedElement.offset().top;
-                var firstPosLeft = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().left;
-                var secondPosLeft = focused_Element_with_Intermediate_Text.secondFocusedElement.offset().left;
-
-                var currentPosTop = currentElement.offset().top;
-                var currentPosLeft = currentElement.offset().left;
-                //console.info("Primer:", focused_Element_with_Intermediate_Text.firstFocusedElement,firstPosTop,firstPosLeft);
-                //console.info("Segundo:", focused_Element_with_Intermediate_Text.secondFocusedElement,secondPosTop,secondPosLeft);
-                //console.info("enfocado:", focused_Element_with_Intermediate_Text.focusedElement);
-                //console.info("Comparando:", currentElement, "Con posiciones:",currentPosTop,currentPosLeft );
-                //console.info("alto primoer",firstElementHeight);
-                //console.info("alto segundo",secondElementHeight);
-                
-                //console.info(currentPosTop,currentPosLeft)
-                var firstElementHeight = focused_Element_with_Intermediate_Text.firstFocusedElement.outerHeight(); // Altura del primer elemento
-                var secondElementHeight = focused_Element_with_Intermediate_Text.secondFocusedElement.outerHeight(); // Altura del segundo elemento
-                var currentElementHeight=currentElement.outerHeight();
-                // Verifica si el elemento está entre los dos enfocados
-                if (currentPosTop > firstPosTop + firstElementHeight && 
-                    currentPosTop +currentElementHeight<secondPosTop){
-
-                    // Verifica si el elemento es enfocable (botones, campos de texto, etc.)
-                    if (currentElement.is('input, button, a, select, textarea, label, [tabindex], [contenteditable]')) {
-                       // console.info("Elemento interactivo detectado:", currentElement);
-                        elementsInBetween.push(currentElement); // Agregar el elemento al array
-                    }
-
-
-                       // console.info("Elemento enfocable intermedio detectado:", currentElement);
-                        //elementsInBetween.push(currentElement); // Agregar el elemento al array
-                   
-                }
-            });
-            
-            
-           ///console.info("Elementos enfocados entre ambos:", elementsInBetween);
-
-            var elementText = [];
-            elementsInBetween.forEach(function(element) {
-                if (element.text().trim() !== "" && element.is('label, p, div') && (!element.is('label') || !element.attr('for'))) {
-                    elementText.push(element);
-                    foundText = true;
-                }
-            });
-
-            if (!foundText) {
-                if (focused_Element_with_Intermediate_Text.focusedWithTab) {
-                    // console.info("El foco fue recibido con la tecla Tab, pero no se encontró texto entre los elementos enfocados.");
+        });
+    
+        // Detecta cuando un elemento recibe el foco
+        $("input[type='text'], input[type='email'], textarea, button, input[type='submit'], a").on("focus", function() {
+            focused_Element_with_Intermediate_Text.focusedElement = $(this);
+    
+            if (!focused_Element_with_Intermediate_Text.firstFocusedElement) {
+                focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+            } else {
+                if (!focused_Element_with_Intermediate_Text.secondFocusedElement) {
+                    focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
                 } else {
-                    // console.info("El foco NO fue recibido con la tecla Tab y no se encontró texto entre los elementos enfocados.");
-                }
-            } else {
-              //  console.info("Elementos de texto entre ambos:", elementText);
-                if (elementText.length==elementsInBetween.length){
-                   // console.info("Reportar evento")
-                    var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
-                    focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
-                        xpath_first: xpath_first,xpath_second:xpath_second,elementText:elementText});
+                    focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.secondFocusedElement;
+                    focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
                 }
             }
-        }
-    });
-}
+    
+            // Verifica si ambos elementos enfocados están definidos
+            if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
+                var elementsBetween = $('*').filter(':visible'); // Todos los elementos visibles
+                var elementsInBetween = [];
+                var foundText = false;
+    
+                console.info("Elementos visibles:", elementsBetween);
+    
+                elementsBetween.each(function() {
+                    var currentElement = $(this);
+                    var firstPosTop = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().top;
+                    var secondPosTop = focused_Element_with_Intermediate_Text.secondFocusedElement.offset().top;
+                    var currentPosTop = currentElement.offset().top;
+    
+                    var firstElementHeight = focused_Element_with_Intermediate_Text.firstFocusedElement.outerHeight();
+                    var secondElementHeight = focused_Element_with_Intermediate_Text.secondFocusedElement.outerHeight();
+                    var currentElementHeight = currentElement.outerHeight();
+    
+                    // Verificar si el elemento está entre los dos enfocados
+                    if (currentPosTop >= firstPosTop + firstElementHeight && 
+                        currentPosTop + currentElementHeight <= secondPosTop) {
+                        
+                        console.info("Elemento detectado:", currentElement, currentElement[0].nodeName);
+    
+                        // Verifica si el elemento es un `div` o contiene texto relevante
+                        if (currentElement.is('label, p, div') || currentElement.text().trim() !== "") {
+                            elementsInBetween.push(currentElement);
+                            foundText = true;
+    
+                            // Identificar específicamente un `div`
+                            if (currentElement.is('div')) {
+                                console.info("Div detectado:", currentElement);
+                            }
+                        }
+                    }
+                });
+    
+                console.info("Elementos enfocados entre ambos:", elementsInBetween);
+    
+                if (foundText) {
+                    console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
+                    if (elementsInBetween.every(el => el.is('div, label, p'))) {
+                        console.info("Reportar evento: todos los elementos intermedios son texto/div.");
+                        /*
+                        var xpath_first = this.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
+                        var xpath_second = this.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
+                        logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
+                            xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween
+                        });
+                        */
+                    }
+                } else {
+                    console.info("No se encontró texto entre los elementos enfocados.");
+                }
+            }
+        });
+    }
+    
 
+    
 // Instancia de la función
 
 
