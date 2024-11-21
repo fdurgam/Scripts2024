@@ -626,7 +626,7 @@ function Focused_Element_with_Intermediate_Text() {
             focused_Element_with_Intermediate_Text.focusedWithTab = true;
         }
     });
-
+   
     // Detecta cuando un elemento recibe el foco
     $("input[type='text'], input[type='email'], input[type='password'], textarea, button, input[type='submit'], a").on("focus", function() {
         focused_Element_with_Intermediate_Text.focusedElement = $(this);
@@ -693,11 +693,8 @@ function Focused_Element_with_Intermediate_Text() {
                     // Verificar que el div tenga texto, no sea enfocable y no contenga labels con for válidos
                     var hasText = el.text().trim() !== "";
                    // var isFocusable = el.is(':focusable'); // Verifica si el div es enfocable
-                    var isFocusable=false;
-                    if (isFocusable(el)) {
-                        // El elemento es enfocable
-                        var isFocusable=true;
-                    }
+                    var isFocusable=element.is('a[href], button, input, select, textarea, [contenteditable=true], [tabindex]:not([tabindex="-1"])');;
+                   
                     var containsInvalidLabel = el.find('label[for]').toArray().some(label => {
                         var forAttr = $(label).attr('for');
                         return forAttr && $('#' + forAttr).length > 0;
@@ -1647,10 +1644,7 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
 /************************************************************************************************************
 10 - SynthesisInIdiomaDifferentThePage
 ************************************************************************************************************/
-function isFocusable(element) {
-    // Verifica si el elemento es enfocable
-    return element.is('a[href], button, input, select, textarea, [contenteditable=true], [tabindex]:not([tabindex="-1"])');
-}
+
 function Winding_tab_sequence(contenedor) {
     this.threatName = "Winding_tab_sequence";
     this.code = "E10";
