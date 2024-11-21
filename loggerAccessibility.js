@@ -1647,6 +1647,10 @@ function SearchResultWithoutElectronicText(paramMinimumWaitingTime, paramMaximum
 /************************************************************************************************************
 10 - SynthesisInIdiomaDifferentThePage
 ************************************************************************************************************/
+function isFocusable(element) {
+    // Verifica si el elemento es enfocable
+    return element.is('a[href], button, input, select, textarea, [contenteditable=true], [tabindex]:not([tabindex="-1"])');
+}
 function Winding_tab_sequence(contenedor) {
     this.threatName = "Winding_tab_sequence";
     this.code = "E10";
