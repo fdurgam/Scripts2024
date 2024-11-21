@@ -610,7 +610,9 @@ function Deleted_input_content(paramOc_Elem){
 function Focused_Element_with_Intermediate_Text() {
     this.code = "no aplica";
     this.threatName = "Focused Element with Intermediate Text";
-    if (logger.verbose) console.info(">>Cargando El Evento "+this.threatName + ", Codigo: " + this.code);
+    if (typeof logger !== "undefined" && logger.verbose) {
+        console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
+    }
     this.firstFocusedElement = null;
     this.secondFocusedElement = null;
     this.focusedElement = null;
@@ -682,19 +684,43 @@ function Focused_Element_with_Intermediate_Text() {
 
             if (foundText) {
               //  console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
-                if (elementsInBetween.every(el => el.is('div, label, p'))) {
-                    console.info("Reportar evento: todos los elementos intermedios son texto/div.");
-                    var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
-                    console.info("Reportar evento: todos los elementos intermedios son texto/div.");
-                    //logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {xpath_first: xpath_first, xpath_second: xpath_second, elementText: elementsInBetween});
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
-                        xpath_first:xpath_first,
-                        xpath:xpath,
-                        elementsInBetween:elementsInBetween
-
-                    });    
+              if (elementsInBetween.every(el => {
+                if (el.is('label')) {
+                    // Verificar que el label no tenga un 'for' asociado a un id válido
+                    var forAttr = el.attr('for');
+                    return !(forAttr && $('#' + forAttr).length > 0);
+                } else if (el.is('div')) {
+                    // Verificar que el div tenga texto, no sea enfocable y no contenga labels con for válidos
+                    var hasText = el.text().trim() !== "";
+                    var isFocusable = el.is(':focusable'); // Verifica si el div es enfocable
+                    var containsInvalidLabel = el.find('label[for]').toArray().some(label => {
+                        var forAttr = $(label).attr('for');
+                        return forAttr && $('#' + forAttr).length > 0;
+                    });
+            
+                    return hasText && !isFocusable && !containsInvalidLabel;
+                } else if (el.is('p')) {
+                    // Solo verificar que el <p> contiene texto
+                    return el.text().trim() !== "";
                 }
+                // Si no es ninguno de los anteriores, no cumple la condición
+                return false;
+            })) {
+                console.info("Reportar evento: todos los elementos intermedios son texto/div.", elementsInBetween);
+            
+                // Verifica si logger está definido y tiene el método logEvent
+                if (typeof logger !== "undefined" && typeof logger.logEvent === "function") {
+                    var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
+                    var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
+            
+                    // Registra el evento
+                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
+                        xpath_first: xpath_first,
+                        xpath: xpath_second,
+                        elementsInBetween: elementsInBetween
+                    });
+                }
+            }
                    
                 } else {
                 //console.info("No se encontró texto entre los elementos enfocados.");
