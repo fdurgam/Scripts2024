@@ -607,125 +607,122 @@ function Deleted_input_content(paramOc_Elem){
 ************************************************************************************************************/
 
 
-function Focused_Element_with_Intermediate_Text() {
+function FocusedElementWithIntermediateText() {
     this.code = "no aplica";
     this.threatName = "Focused Element with Intermediate Text";
     if (typeof logger !== "undefined" && logger.verbose) {
-        console.info(">>Cargando El Evento " + this.threatName + ", Codigo: " + this.code);
+        console.info(">>Cargando el evento " + this.threatName + ", Código: " + this.code);
     }
+
     this.firstFocusedElement = null;
     this.secondFocusedElement = null;
     this.focusedElement = null;
     this.focusedWithTab = false;
 
-    var focused_Element_with_Intermediate_Text = this; // Referencia a esta instancia
+    var focusedElementWithIntermediateText = this; // Referencia a esta instancia
 
     // Detecta si la tecla Tab fue utilizada
     $(document).on("keydown", function(event) {
-        if (event.keyCode === 9) {
-            focused_Element_with_Intermediate_Text.focusedWithTab = true;
+        if (event.keyCode === 9) { // Código de la tecla Tab
+            focusedElementWithIntermediateText.focusedWithTab = true;
         }
     });
-   
-    // Detecta cuando un elemento recibe el foco
-    $("input[type='text'], input[type='email'], input[type='password'], textarea, button, input[type='submit'], a").on("focus", function() {
-        focused_Element_with_Intermediate_Text.focusedElement = $(this);
 
-        if (!focused_Element_with_Intermediate_Text.firstFocusedElement) {
-            focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+    // Detecta cuando un elemento recibe el foco, incluyendo los elementos con tabindex
+    $("input[type='text'], input[type='email'], input[type='password'], textarea, button, input[type='submit'], a, div[tabindex], [tabindex]").on("focus", function() {
+        focusedElementWithIntermediateText.focusedElement = $(this);
+
+        if (!focusedElementWithIntermediateText.firstFocusedElement) {
+            focusedElementWithIntermediateText.firstFocusedElement = focusedElementWithIntermediateText.focusedElement;
         } else {
-            if (!focused_Element_with_Intermediate_Text.secondFocusedElement) {
-                focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+            if (!focusedElementWithIntermediateText.secondFocusedElement) {
+                focusedElementWithIntermediateText.secondFocusedElement = focusedElementWithIntermediateText.focusedElement;
             } else {
-                focused_Element_with_Intermediate_Text.firstFocusedElement = focused_Element_with_Intermediate_Text.secondFocusedElement;
-                focused_Element_with_Intermediate_Text.secondFocusedElement = focused_Element_with_Intermediate_Text.focusedElement;
+                // Desplazar los elementos enfocados
+                focusedElementWithIntermediateText.firstFocusedElement = focusedElementWithIntermediateText.secondFocusedElement;
+                focusedElementWithIntermediateText.secondFocusedElement = focusedElementWithIntermediateText.focusedElement;
             }
         }
 
         // Verifica si ambos elementos enfocados están definidos
-        if (focused_Element_with_Intermediate_Text.firstFocusedElement && focused_Element_with_Intermediate_Text.secondFocusedElement) {
+        if (focusedElementWithIntermediateText.firstFocusedElement && focusedElementWithIntermediateText.secondFocusedElement) {
             var elementsBetween = $('*').filter(':visible'); // Todos los elementos visibles
             var elementsInBetween = [];
             var foundText = false;
 
-            //console.info("Elementos visibles:", elementsBetween);
-           
             elementsBetween.each(function() {
                 var currentElement = $(this);
-                var firstPosTop = focused_Element_with_Intermediate_Text.firstFocusedElement.offset().top;
-                var secondPosTop = focused_Element_with_Intermediate_Text.secondFocusedElement.offset().top;
+                var firstPosTop = focusedElementWithIntermediateText.firstFocusedElement.offset().top;
+                var secondPosTop = focusedElementWithIntermediateText.secondFocusedElement.offset().top;
                 var currentPosTop = currentElement.offset().top;
 
-                var firstElementHeight = focused_Element_with_Intermediate_Text.firstFocusedElement.outerHeight();
-                var secondElementHeight = focused_Element_with_Intermediate_Text.secondFocusedElement.outerHeight();
+                var firstElementHeight = focusedElementWithIntermediateText.firstFocusedElement.outerHeight();
+                var secondElementHeight = focusedElementWithIntermediateText.secondFocusedElement.outerHeight();
                 var currentElementHeight = currentElement.outerHeight();
 
                 // Verificar si el elemento está entre los dos enfocados
-                if (currentPosTop >= firstPosTop + firstElementHeight && 
-                    currentPosTop + currentElementHeight <= secondPosTop) {
-                    
-                   // console.info("Elemento detectado:", currentElement, currentElement[0].nodeName);
-
-                    // Verifica si el elemento es un `div` o contiene texto relevante
+                if (currentPosTop >= firstPosTop + firstElementHeight && currentPosTop + currentElementHeight <= secondPosTop) {
+                    // Verifica si el elemento contiene texto
                     if (currentElement.is('label, p, div') || currentElement.text().trim() !== "") {
-                        elementsInBetween.push(currentElement);
-                        foundText = true;
+                        // Excluir el <label> si tiene un 'for' válido
+                        if (currentElement.is('label')) {
+                            var forAttr = currentElement.attr('for');
+                            // Excluir el <label> si tiene un 'for' válido
+                            if (forAttr && $('#' + forAttr).length > 0) {
+                                return true; // Si el <label> tiene un 'for' válido, lo ignoramos
+                            }
+                        }
 
-                        // Identificar específicamente un `div`
-                        if (currentElement.is('div')) {
-                           // console.info("Div detectado:", currentElement);
+                        // Verificar si el elemento intermedio tiene un <label> dentro
+                        var containsLabelWithFor = currentElement.find('label[for]').toArray().some(function(label) {
+                            var forAttr = $(label).attr('for');
+                            return forAttr && $('#' + forAttr).length > 0;
+                        });
+
+                        // Si contiene un <label> vinculado a un control, lo ignoramos
+                        if (containsLabelWithFor) {
+                            return true; // Ignoramos este elemento intermedio
+                        }
+
+                        // Llamada recursiva para revisar hijos y ver si contienen texto
+                        function hasTextInDescendants(element) {
+                            var childrenWithText = element.find('*').filter(function() {
+                                return $(this).text().trim() !== "";
+                            });
+                            return childrenWithText.length > 0;
+                        }
+
+                        // Verificar si el elemento o sus descendientes contienen texto
+                        if (hasTextInDescendants(currentElement)) {
+                            elementsInBetween.push(currentElement);
+                            foundText = true;
                         }
                     }
                 }
             });
-           // console.info("Elemento primero",focused_Element_with_Intermediate_Text.firstFocusedElement);
-            //console.info("Elemeneto secon", focused_Element_with_Intermediate_Text.secondFocusedElement)
-            //console.info("Elementos enfocados entre ambos:", elementsInBetween);
 
             if (foundText) {
-              //  console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
-              if (elementsInBetween.every(el => {
-                if (el.is('label')) {
-                    // Verificar que el label no tenga un 'for' asociado a un id válido
-                    var forAttr = el.attr('for');
-                    return !(forAttr && $('#' + forAttr).length > 0);
-                } else if (el.is('div')) {
-                    // Verificar que el div tenga texto, no sea enfocable y no contenga labels con for válidos
-                    var hasText = el.text().trim() !== "";
-                   // var isFocusable = el.is(':focusable'); // Verifica si el div es enfocable
-                    var isFocusable=element.is('a[href], button, input, select, textarea, [contenteditable=true], [tabindex]:not([tabindex="-1"])');;
-                   
-                    var containsInvalidLabel = el.find('label[for]').toArray().some(label => {
-                        var forAttr = $(label).attr('for');
-                        return forAttr && $('#' + forAttr).length > 0;
-                    });
-            
-                    return hasText && !isFocusable && !containsInvalidLabel;
-                } else if (el.is('p')) {
-                    // Solo verificar que el <p> contiene texto
-                    return el.text().trim() !== "";
+                console.info("Se encontraron elementos con texto intermedio:", elementsInBetween);
+
+                // Verifica si los elementos intermedios son relevantes (contienen texto)
+                if (elementsInBetween.every(el => {
+                    return el.text().trim() !== ""; // Asegurarse de que los elementos intermedios contienen texto
+                })) {
+                    console.info("Reportar evento: Todos los elementos intermedios contienen texto.", elementsInBetween);
+
+                    // Verifica si logger está definido y tiene el método logEvent
+                    if (typeof logger !== "undefined" && typeof logger.logEvent === "function") {
+                        var xpath_first = xpathInstance.getElementXPath(focusedElementWithIntermediateText.firstFocusedElement);
+                        var xpath_second = xpathInstance.getElementXPath(focusedElementWithIntermediateText.secondFocusedElement);
+
+                        // Registra el evento
+                        logger.logEvent(focusedElementWithIntermediateText.threatName, {
+                            xpath_first: xpath_first,
+                            xpath: xpath_second,
+                            elementsInBetween: elementsInBetween
+                        });
+                    }
                 }
-                // Si no es ninguno de los anteriores, no cumple la condición
-                return false;
-            })) {
-                console.info("Reportar evento: todos los elementos intermedios son texto/div.", elementsInBetween);
-            
-                // Verifica si logger está definido y tiene el método logEvent
-                if (typeof logger !== "undefined" && typeof logger.logEvent === "function") {
-                    var xpath_first = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.firstFocusedElement);
-                    var xpath_second = xpathInstance.getElementXPath(focused_Element_with_Intermediate_Text.secondFocusedElement);
-            
-                    // Registra el evento
-                    logger.logEvent(focused_Element_with_Intermediate_Text.threatName, {
-                        xpath_first: xpath_first,
-                        xpath: xpath_second,
-                        elementsInBetween: elementsInBetween
-                    });
-                }
-            }
-                   
-                } else {
-                //console.info("No se encontró texto entre los elementos enfocados.");
             }
         }
     });
