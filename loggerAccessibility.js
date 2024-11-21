@@ -692,7 +692,12 @@ function Focused_Element_with_Intermediate_Text() {
                 } else if (el.is('div')) {
                     // Verificar que el div tenga texto, no sea enfocable y no contenga labels con for válidos
                     var hasText = el.text().trim() !== "";
-                    var isFocusable = el.is(':focusable'); // Verifica si el div es enfocable
+                   // var isFocusable = el.is(':focusable'); // Verifica si el div es enfocable
+                    var isFocusable=false;
+                    if (isFocusable(el)) {
+                        // El elemento es enfocable
+                        var isFocusable=true;
+                    }
                     var containsInvalidLabel = el.find('label[for]').toArray().some(label => {
                         var forAttr = $(label).attr('for');
                         return forAttr && $('#' + forAttr).length > 0;
