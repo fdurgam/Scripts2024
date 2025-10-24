@@ -169,7 +169,7 @@ function LoggerAccesibility(serverHost, verbose) {
             this.marca=new Marcar();
             //this.skipped_Focus_Element=new Skipped_Focus_Element()
                                    
-            this.focused_Element_with_Intermediate_Text=new Focused_Element_with_Intermediate_Text()
+            //this.focused_Element_with_Intermediate_Text=new Focused_Element_with_Intermediate_Text()
             this.skippedFocusElement=new SkippedFocusElement();
             if (logger.verbose) console.info("Loading Accessibility Events: Done");
             console.info(this.unfilledForm)
